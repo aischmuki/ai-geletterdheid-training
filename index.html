@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI begrijpen in mensentaal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink: #0D1117;
+  --ink2: #1C2333;
+  --muted: #6B7A99;
+  --light: #F4F5F8;
+  --border: #E4E7EF;
+  --blue: #2D5BE3;
+  --blue-light: #EEF2FD;
+  --gold: #C8922A;
+  --gold-light: #FDF5E6;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #fff;
+  color: var(--ink);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: 0 clamp(24px, 6vw, 80px);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(45,91,227,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(200,146,42,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  z-index: 2;
+}
+
+.logo {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.01em;
+}
+.logo span { color: #b0bcdc; font-weight: 400; }
+
+.act-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--blue);
+  background: var(--blue-light);
+  border: 1px solid rgba(45,91,227,0.15);
+  padding: 6px 14px;
+  border-radius: 20px;
+  letter-spacing: 0.01em;
+}
+.act-badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  flex-shrink: 0;
+}
+
+.hero-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 64px 0 48px;
+  max-width: 720px;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+
+.hero-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(42px, 7vw, 82px);
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin-bottom: 28px;
+}
+
+.hero-title em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--muted);
+}
+
+.hero-intro {
+  font-size: clamp(16px, 2vw, 19px);
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 520px;
+  margin-bottom: 44px;
+}
+
+.hero-intro strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.cta-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.btn-start {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--ink);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 14px 28px;
+  border-radius: 10px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background .2s, transform .15s;
+}
+.btn-start:hover { background: var(--blue); transform: translateY(-1px); }
+.btn-start svg { width: 16px; height: 16px; }
+
+.cta-note {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.hero-footer {
+  padding: 24px 0;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 2;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+}
+.stat-num {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1;
+}
+.stat-lbl {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+.stat-div {
+  width: 1px;
+  height: 36px;
+  background: var(--border);
+}
+
+/* ── SECTION SHARED ── */
+section {
+  padding: clamp(64px, 10vw, 120px) clamp(24px, 6vw, 80px);
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+
+.section-body {
+  font-size: 16px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 540px;
+}
+
+/* ── DOEL ── */
+.doel {
+  background: var(--light);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.doel-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  margin-top: 48px;
+  align-items: start;
+}
+
+@media (max-width: 680px) {
+  .doel-grid { grid-template-columns: 1fr; gap: 32px; }
+  .two-col { grid-template-columns: 1fr !important; }
+}
+
+.doel-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.doel-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+.doel-item:last-child { border-bottom: none; }
+
+.doel-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 15px;
+  margin-top: 1px;
+}
+
+.doel-text {
+  font-size: 15px;
+  color: var(--ink);
+  line-height: 1.55;
+}
+.doel-text strong { font-weight: 500; display: block; }
+.doel-text span { font-size: 13px; color: var(--muted); }
+
+.doel-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 32px;
+}
+
+.doel-card-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+.doel-card-title {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.doel-card p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.act-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--blue);
+  text-decoration: none;
+  padding: 10px 14px;
+  background: var(--blue-light);
+  border-radius: 8px;
+  border: 1px solid rgba(45,91,227,0.15);
+  transition: background .15s;
+  width: fit-content;
+}
+.act-link:hover { background: #dce7fb; }
+.act-link svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+/* ── LEERCYCLUS ── */
+.cyclus-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 48px;
+}
+
+.cyclus-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .2s, transform .2s;
+}
+.cyclus-card:hover { border-color: #b0bcdc; transform: translateY(-2px); }
+
+.cyclus-num {
+  font-family: 'Fraunces', serif;
+  font-size: 56px;
+  font-weight: 900;
+  color: rgba(0,0,0,0.04);
+  position: absolute;
+  right: 16px;
+  top: 8px;
+  line-height: 1;
+  pointer-events: none;
+  letter-spacing: -0.04em;
+}
+
+.cyclus-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  margin-bottom: 14px;
+  border: 1px solid transparent;
+}
+
+.cyclus-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.cyclus-sub {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* Kleuren per stap */
+.c1 .cyclus-icon { background: #EEF2FD; border-color: rgba(45,91,227,.12); }
+.c2 .cyclus-icon { background: #F0FDF4; border-color: rgba(5,150,105,.12); }
+.c3 .cyclus-icon { background: #FFF7ED; border-color: rgba(234,88,12,.12); }
+.c4 .cyclus-icon { background: #FFF1F2; border-color: rgba(225,29,72,.12); }
+.c5 .cyclus-icon { background: #F5F3FF; border-color: rgba(124,58,237,.12); }
+.c6 .cyclus-icon { background: var(--gold-light); border-color: rgba(200,146,42,.15); }
+
+/* ── MODULES PREVIEW ── */
+.modules-section { background: var(--ink); }
+.modules-section .section-label { color: rgba(255,255,255,0.35); }
+.modules-section .section-title { color: #fff; }
+.modules-section .section-body { color: rgba(255,255,255,0.45); }
+
+.modules-list {
+  margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.mod-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  transition: background .15s;
+}
+.mod-row:last-child { border-bottom: none; }
+.mod-row:hover { background: rgba(255,255,255,0.03); }
+
+.mod-num-badge {
+  font-family: 'Fraunces', serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+
+.mod-info { flex: 1; }
+.mod-title { font-size: 15px; font-weight: 500; color: #fff; }
+.mod-kernzin { font-size: 12px; color: rgba(255,255,255,0.35); margin-top: 2px; font-style: italic; }
+
+.mod-tag {
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  white-space: nowrap;
+}
+
+/* module kleuren */
+.m1 .mod-num-badge { background: rgba(79,126,247,0.15); color: #7DA4FA; }
+.m2 .mod-num-badge { background: rgba(139,92,246,0.15); color: #A78BFA; }
+.m3 .mod-num-badge { background: rgba(245,158,11,0.15); color: #FCD34D; }
+.m4 .mod-num-badge { background: rgba(16,185,129,0.15); color: #6EE7B7; }
+.m5 .mod-num-badge { background: rgba(236,72,153,0.15); color: #F9A8D4; }
+
+/* ── QUOTE ── */
+.quote-section {
+  background: var(--blue);
+  text-align: center;
+  padding: clamp(64px, 8vw, 96px) clamp(24px, 6vw, 80px);
+}
+
+.quote-text {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(22px, 3.5vw, 38px);
+  font-weight: 300;
+  font-style: italic;
+  color: #fff;
+  line-height: 1.35;
+  max-width: 680px;
+  margin: 0 auto 12px;
+  letter-spacing: -0.01em;
+}
+
+.quote-attr {
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 40px;
+}
+
+.btn-start-light {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  color: var(--blue);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 14px 28px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: opacity .2s, transform .15s;
+}
+.btn-start-light:hover { opacity: .92; transform: translateY(-1px); }
+.btn-start-light svg { width: 16px; height: 16px; }
+
+/* ── FOOTER ── */
+footer {
+  padding: 28px clamp(24px, 6vw, 80px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.footer-logo {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+}
+.footer-logo span { color: #b0bcdc; font-weight: 400; }
+.footer-note { font-size: 12px; color: var(--muted); }
+
+/* ── ANIMATIES ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { opacity: 0; animation: fadeUp .6s ease forwards; }
+.fade-up:nth-child(1) { animation-delay: .05s; }
+.fade-up:nth-child(2) { animation-delay: .15s; }
+.fade-up:nth-child(3) { animation-delay: .25s; }
+.fade-up:nth-child(4) { animation-delay: .35s; }
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="topbar">
+    <div class="logo">AI begrijpen in mensentaal</div>
+    <div class="act-badge">EU AI Act — Artikel 4</div>
+  </div>
+
+  <div class="hero-body">
+    <div class="hero-label fade-up">Online training &middot; 5 modules &middot; Overheid &amp; publieke sector</div>
+    <h1 class="hero-title fade-up">
+      AI begrijpen<br><em>in mensentaal</em>
+    </h1>
+    <p class="hero-intro fade-up">
+      Kunstmatige intelligentie verandert hoe we werken, communiceren en beslissingen nemen.
+      Deze training helpt je <strong>AI bewust te begrijpen</strong> — niet als technisch specialist,
+      maar als professional die kritisch en verantwoord met AI omgaat.
+    </p>
+    <div class="cta-row fade-up">
+      <a href="module-01-v2.html" class="btn-start">
+        Start de training
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+      </a>
+      <span class="cta-note">Geen account vereist &middot; Gratis</span>
+    </div>
+  </div>
+
+  <div class="hero-footer">
+    <div class="stat">
+      <span class="stat-num">5</span>
+      <span class="stat-lbl">modules</span>
+    </div>
+    <div class="stat-div"></div>
+    <div class="stat">
+      <span class="stat-num">~2u</span>
+      <span class="stat-lbl">doorlooptijd</span>
+    </div>
+    <div class="stat-div"></div>
+    <div class="stat">
+      <span class="stat-num">AI Act</span>
+      <span class="stat-lbl">conform artikel 4</span>
+    </div>
+    <div class="stat-div"></div>
+    <div class="stat">
+      <span class="stat-num">100%</span>
+      <span class="stat-lbl">online, in eigen tempo</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── DOEL ── -->
+<section class="doel">
+  <div class="section-label">Waarom deze training</div>
+  <h2 class="section-title">Het doel is<br>AI-bekwaamheid</h2>
+
+  <div class="doel-grid">
+    <div class="doel-items">
+      <div class="doel-item">
+        <div class="doel-icon">🧠</div>
+        <div class="doel-text">
+          <strong>AI beter begrijpen</strong>
+          <span>Wat is AI, hoe werkt het en wat kan het wel en niet?</span>
+        </div>
+      </div>
+      <div class="doel-item">
+        <div class="doel-icon">👁</div>
+        <div class="doel-text">
+          <strong>Bewust omgaan met AI-tools</strong>
+          <span>Herkennen wanneer je AI gebruikt — en wat dat betekent.</span>
+        </div>
+      </div>
+      <div class="doel-item">
+        <div class="doel-icon">⚠️</div>
+        <div class="doel-text">
+          <strong>Risico's en kansen herkennen</strong>
+          <span>Bias, hallucinaties, privacy — én de winst die AI kan bieden.</span>
+        </div>
+      </div>
+      <div class="doel-item">
+        <div class="doel-icon">💬</div>
+        <div class="doel-text">
+          <strong>Kritisch blijven denken</strong>
+          <span>AI-output beoordelen, verifiëren en niet blind vertrouwen.</span>
+        </div>
+      </div>
+      <div class="doel-item">
+        <div class="doel-icon">✅</div>
+        <div class="doel-text">
+          <strong>AI verantwoord toepassen</strong>
+          <span>In je werk én dagelijks leven — met oog voor ethiek en impact.</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="doel-card">
+        <div class="doel-card-label">EU AI Act &mdash; Artikel 4</div>
+        <div class="doel-card-title">AI-geletterdheid is een wettelijke verplichting</div>
+        <p>
+          Artikel 4 van de EU AI Act verplicht organisaties die AI-systemen inzetten of ontwikkelen
+          om medewerkers voldoende AI-geletterdheid bij te brengen. Niet als vinkje op een lijst —
+          maar als fundament voor verantwoord gebruik.
+        </p>
+        <p>
+          Deze training is opgebouwd conform de vereisten van artikel 4: begrip van AI-werking,
+          risico-bewustzijn, en praktische toepassing in een professionele context.
+        </p>
+        <a href="https://eur-lex.europa.eu/legal-content/NL/TXT/?uri=CELEX:32024R1689" target="_blank" class="act-link">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 1h6v6M13 1L6 8M1 10V3h5"/></svg>
+          Lees artikel 4 in de officiële tekst
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── LEERCYCLUS ── -->
+<section>
+  <div class="section-label">Didactische opbouw</div>
+  <h2 class="section-title">Een vaste leercyclus</h2>
+  <p class="section-body">
+    Elke module volgt dezelfde structuur: van bewustwording naar begrip, naar praktijk.
+    Zo bouw je stap voor stap een stevige basis op.
+  </p>
+
+  <div class="cyclus-grid">
+    <div class="cyclus-card c1">
+      <div class="cyclus-num">1</div>
+      <div class="cyclus-icon">💡</div>
+      <div class="cyclus-title">Bewustwording</div>
+      <div class="cyclus-sub">Wat is AI eigenlijk? Hoe verweven is het al in ons dagelijks leven — zonder dat we het doorhebben?</div>
+    </div>
+    <div class="cyclus-card c2">
+      <div class="cyclus-num">2</div>
+      <div class="cyclus-icon">📖</div>
+      <div class="cyclus-title">Begrip</div>
+      <div class="cyclus-sub">Hoe werkt AI op hoofdlijnen? Wat zijn patronen, trainingsdata, en waarom maakt AI fouten?</div>
+    </div>
+    <div class="cyclus-card c3">
+      <div class="cyclus-num">3</div>
+      <div class="cyclus-icon">🔍</div>
+      <div class="cyclus-title">Toepassing</div>
+      <div class="cyclus-sub">Waar gebruiken we AI al? In onze werkprocessen, communicatie, besluitvorming en dienstverlening.</div>
+    </div>
+    <div class="cyclus-card c4">
+      <div class="cyclus-num">4</div>
+      <div class="cyclus-icon">⚖️</div>
+      <div class="cyclus-title">Risico &amp; ethiek</div>
+      <div class="cyclus-sub">Bias, privacy, desinformatie, afhankelijkheid. Waar gaat het mis — en wat kun jij doen?</div>
+    </div>
+    <div class="cyclus-card c5">
+      <div class="cyclus-num">5</div>
+      <div class="cyclus-icon">🛠</div>
+      <div class="cyclus-title">Praktische vaardigheden</div>
+      <div class="cyclus-sub">Prompting, verificatie, kritisch gebruik. AI inzetten als gereedschap — bewust en effectief.</div>
+    </div>
+    <div class="cyclus-card c6">
+      <div class="cyclus-num">6</div>
+      <div class="cyclus-icon">🔄</div>
+      <div class="cyclus-title">Reflectie</div>
+      <div class="cyclus-sub">Waar versterkt AI ons — en waar moeten we grenzen bewaken? Jouw positie als professional.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MODULES ── -->
+<section class="modules-section">
+  <div class="section-label">Trainingsinhoud</div>
+  <h2 class="section-title">Vijf modules,<br>één fundament</h2>
+  <p class="section-body">
+    Van de basis van AI tot samenwerken als professional.
+    Elke module bouwt voort op de vorige.
+  </p>
+
+  <div class="modules-list">
+    <div class="mod-row m1">
+      <div class="mod-num-badge">01</div>
+      <div class="mod-info">
+        <div class="mod-title">Wat is AI eigenlijk?</div>
+        <div class="mod-kernzin">AI denkt niet. AI voorspelt.</div>
+      </div>
+      <div class="mod-tag">Basis &middot; 4 slides</div>
+    </div>
+    <div class="mod-row m2">
+      <div class="mod-num-badge">02</div>
+      <div class="mod-info">
+        <div class="mod-title">Waarom AI impact heeft op mensen</div>
+        <div class="mod-kernzin">AI leert niet alleen van data, maar ook van menselijk gedrag.</div>
+      </div>
+      <div class="mod-tag">Impact &middot; 4 slides</div>
+    </div>
+    <div class="mod-row m3">
+      <div class="mod-num-badge">03</div>
+      <div class="mod-info">
+        <div class="mod-title">Kritisch werken met AI</div>
+        <div class="mod-kernzin">AI kan overtuigend fout zijn.</div>
+      </div>
+      <div class="mod-tag">Kritisch denken &middot; 4 slides</div>
+    </div>
+    <div class="mod-row m4">
+      <div class="mod-num-badge">04</div>
+      <div class="mod-info">
+        <div class="mod-title">Veilig en verantwoord AI gebruiken</div>
+        <div class="mod-kernzin">Wat je invoert in een AI-tool, verlaat jouw organisatie.</div>
+      </div>
+      <div class="mod-tag">Veiligheid &middot; 4 slides</div>
+    </div>
+    <div class="mod-row m5">
+      <div class="mod-num-badge">05</div>
+      <div class="mod-info">
+        <div class="mod-title">Samenwerken met AI</div>
+        <div class="mod-kernzin">De toekomst is niet mens óf AI. Maar mens mét AI.</div>
+      </div>
+      <div class="mod-tag">Praktijk &middot; 4 slides</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── QUOTE + CTA ── -->
+<section class="quote-section">
+  <p class="quote-text">
+    "Hoe beter we begrijpen wat AI is, hoe beter we kunnen bepalen
+    wanneer we AI wel — en juist niet — moeten vertrouwen."
+  </p>
+  <p class="quote-attr">Kerngedachte van deze training</p>
+  <a href="module-01-v2.html" class="btn-start-light">
+    Begin met module 01
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+  </a>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-logo">AI begrijpen in mensentaal</div>
+  <div class="footer-note">Kennis die niet bereikbaar is op het moment dat het ertoe doet, doet zijn werk niet.</div>
+</footer>
+
+</body>
+</html>
