@@ -1,0 +1,753 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+
+.lesson-wrap {
+  display: flex;
+  min-height: 560px;
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  background: var(--color-background-primary);
+}
+
+.sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  border-right: 0.5px solid var(--color-border-tertiary);
+  padding: 1.25rem 0;
+  background: var(--color-background-secondary);
+}
+.sidebar-module {
+  padding: 0 1rem 0.75rem;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  margin-bottom: 0.75rem;
+}
+.sidebar-module span {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+}
+.sidebar-module p {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-top: 2px;
+}
+.sidebar-section {
+  padding: 0 1rem;
+  margin-bottom: 0.5rem;
+}
+.sidebar-section-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+.sidebar-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  margin-bottom: 2px;
+}
+.sidebar-item:hover { background: var(--color-background-tertiary); }
+.sidebar-item.active { background: #EEF2FF; }
+.sidebar-item.done .num { background: #4F46E5; color: #fff; border-color: #4F46E5; }
+.sidebar-item.active .num { border-color: #4F46E5; color: #4F46E5; }
+.num {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-border-secondary);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 500;
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.sidebar-item-text {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+.sidebar-item.active .sidebar-item-text { color: #4F46E5; font-weight: 500; }
+.sidebar-item.done .sidebar-item-text { color: var(--color-text-secondary); }
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.main-header {
+  padding: 1.25rem 2rem 0;
+}
+.lesson-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: #4F46E5;
+  background: #EEF2FF;
+  padding: 3px 10px;
+  border-radius: var(--border-radius-md);
+  margin-bottom: 0.75rem;
+}
+
+.card-area {
+  flex: 1;
+  padding: 0 2rem 1rem;
+  overflow-y: auto;
+}
+
+.card { display: none; }
+.card.active { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.card h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  line-height: 1.25;
+  margin-bottom: 1rem;
+}
+
+.card p {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.blockquote {
+  border-left: 3px solid #4F46E5;
+  background: #EEF2FF;
+  border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+}
+.blockquote p {
+  font-size: 14px;
+  color: #3730A3;
+  font-style: italic;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.info-box {
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+}
+.info-box-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  margin-bottom: 0.5rem;
+}
+
+.scenario-box {
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  margin: 1rem 0;
+}
+.scenario-header {
+  background: #F8F7FF;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.scenario-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: #4F46E5;
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 500;
+  flex-shrink: 0;
+}
+.scenario-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+.scenario-role { font-size: 11px; color: var(--color-text-tertiary); }
+.scenario-body { padding: 1rem 1.25rem; }
+.scenario-body p { margin-bottom: 0.5rem; }
+
+.comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 1rem 0;
+}
+.comparison-card {
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 1rem;
+}
+.comparison-card .comp-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.comparison-card .comp-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: 0.5rem;
+}
+.comparison-card ul {
+  list-style: none;
+  padding: 0;
+}
+.comparison-card ul li {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  padding: 3px 0;
+  display: flex;
+  gap: 6px;
+  line-height: 1.4;
+}
+.comparison-card ul li::before { content: "→"; color: var(--color-text-tertiary); flex-shrink: 0; }
+
+.example-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0;
+}
+.example-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+.example-list li:last-child { border-bottom: none; }
+.example-icon {
+  width: 28px; height: 28px;
+  border-radius: var(--border-radius-md);
+  background: #EEF2FF;
+  color: #4F46E5;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.reflect-options {
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.reflect-opt {
+  border: 0.5px solid var(--color-border-secondary);
+  border-radius: var(--border-radius-md);
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--color-text-primary);
+  line-height: 1.5;
+  transition: border-color 0.15s, background 0.15s;
+}
+.reflect-opt:hover { background: var(--color-background-secondary); }
+.reflect-opt.selected { border-color: #4F46E5; background: #EEF2FF; color: #3730A3; }
+.reflect-opt .check-circle {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-border-secondary);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.reflect-opt.selected .check-circle {
+  background: #4F46E5;
+  border-color: #4F46E5;
+  display: flex; align-items: center; justify-content: center;
+}
+.reflect-opt.selected .check-circle::after {
+  content: "✓";
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+}
+.reflect-feedback {
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--border-radius-md);
+  background: var(--color-background-secondary);
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  display: none;
+  line-height: 1.6;
+}
+
+.completion-wrap {
+  text-align: center;
+  padding: 1rem 0;
+}
+.completion-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #F0FDF4;
+  border: 0.5px solid #86EFAC;
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #166534;
+  margin-bottom: 1.25rem;
+}
+.completion-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 0.5rem;
+}
+.completion-sub {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+.takeaways {
+  text-align: left;
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-lg);
+  border: 0.5px solid var(--color-border-tertiary);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.takeaways-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  margin-bottom: 0.5rem;
+}
+.takeaways ul {
+  list-style: none;
+  padding: 0;
+}
+.takeaways ul li {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  padding: 4px 0;
+  display: flex;
+  gap: 8px;
+  line-height: 1.5;
+}
+.takeaways ul li .tk-check {
+  color: #16A34A;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.next-preview {
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  background: var(--color-background-primary);
+}
+.next-badge {
+  font-size: 10px;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 2px;
+}
+.next-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
+
+.nav-bar {
+  padding: 1rem 2rem;
+  border-top: 0.5px solid var(--color-border-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-btn {
+  padding: 8px 18px;
+  border-radius: var(--border-radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 0.5px solid var(--color-border-secondary);
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+}
+.nav-btn:hover { background: var(--color-background-secondary); }
+.nav-btn.primary {
+  background: #4F46E5;
+  color: #fff;
+  border-color: #4F46E5;
+}
+.nav-btn.primary:hover { background: #4338CA; }
+.nav-btn:disabled { opacity: 0.35; cursor: default; }
+.dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--color-border-secondary);
+  cursor: pointer;
+  transition: background 0.2s, width 0.2s;
+}
+.dot.active {
+  background: #4F46E5;
+  width: 20px;
+  border-radius: 4px;
+}
+.dot.done { background: #A5B4FC; }
+
+.highlight-word {
+  background: #EEF2FF;
+  color: #3730A3;
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-weight: 500;
+  font-size: 0.95em;
+}
+
+.step-indicator {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  text-align: center;
+}
+</style>
+
+<h2 class="sr-only">Interactieve les: Waarom AI-begrip belangrijk is — Module 01, Les 1 van 6</h2>
+
+<div class="lesson-wrap">
+  <div class="sidebar">
+    <div class="sidebar-module">
+      <span>Module 01</span>
+      <p>Wat is AI eigenlijk?</p>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Lessen</div>
+      <div class="sidebar-item active" id="nav-1">
+        <div class="num">1</div>
+        <div class="sidebar-item-text">Waarom AI-begrip belangrijk is</div>
+      </div>
+      <div class="sidebar-item" id="nav-2">
+        <div class="num">2</div>
+        <div class="sidebar-item-text">Wat verstaan we onder AI?</div>
+      </div>
+      <div class="sidebar-item" id="nav-3">
+        <div class="num">3</div>
+        <div class="sidebar-item-text">Traditionele software vs. AI</div>
+      </div>
+      <div class="sidebar-item" id="nav-4">
+        <div class="num">4</div>
+        <div class="sidebar-item-text">Waarom AI menselijk lijkt</div>
+      </div>
+      <div class="sidebar-item" id="nav-5">
+        <div class="num">5</div>
+        <div class="sidebar-item-text">Hallucinaties: overtuigend fout</div>
+      </div>
+      <div class="sidebar-item" id="nav-6">
+        <div class="num">6</div>
+        <div class="sidebar-item-text">Samenvatting</div>
+      </div>
+    </div>
+    <div class="sidebar-section" style="margin-top:0.75rem; padding-top:0.75rem; border-top:0.5px solid var(--color-border-tertiary);">
+      <div class="sidebar-section-label">Oefening</div>
+      <div class="sidebar-item">
+        <div class="num" style="font-size:13px;">⚡</div>
+        <div class="sidebar-item-text">AI of geen AI?</div>
+      </div>
+    </div>
+    <div class="sidebar-section" style="margin-top:0.25rem;">
+      <div class="sidebar-section-label">Quiz</div>
+      <div class="sidebar-item">
+        <div class="num" style="font-size:13px;">?</div>
+        <div class="sidebar-item-text">5 kennischeck-vragen</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="main-header">
+      <div class="lesson-badge" id="lesson-badge">MODULE 01 · LES 1/6 · CARD 1 VAN 6</div>
+    </div>
+
+    <div class="card-area">
+
+      <!-- CARD 1: Context — waarom dit ertoe doet -->
+      <div class="card active" id="card-1">
+        <h1>Waarom AI-begrip belangrijk is</h1>
+        <p>Kunstmatige intelligentie is verweven in zoekmachines, sociale media, klantenservice, tekstverwerking, navigatie en besluitvorming. Toch gebruiken veel mensen AI zonder te begrijpen wat het is, hoe het werkt en welke invloed het heeft.</p>
+        <div class="blockquote">
+          <p>AI-geletterdheid begint niet bij tools, maar bij begrip. Pas wanneer we begrijpen hoe AI werkt, kunnen we AI bewust, kritisch en verantwoord gebruiken.</p>
+        </div>
+        <p>Dat klinkt misschien abstract — dus laten we het concreet maken. Stel: je werkt in de publieke dienstverlening. Een AI-tool helpt je om dossiers sneller samen te vatten, brieven te schrijven of vragen van burgers te beantwoorden.</p>
+        <p>Drie vragen die je dan als professional zou moeten kunnen stellen:</p>
+        <ul class="example-list">
+          <li>
+            <div class="example-icon"><i class="ti ti-alert-triangle" aria-hidden="true"></i></div>
+            <span><strong>Klopt dit?</strong> AI maakt fouten — soms overtuigend. Kun jij beoordelen wanneer de output niet te vertrouwen is?</span>
+          </li>
+          <li>
+            <div class="example-icon"><i class="ti ti-shield-lock" aria-hidden="true"></i></div>
+            <span><strong>Is dit veilig?</strong> Wat mag je delen met een AI-systeem en wat niet? Waar gaan die gegevens naartoe?</span>
+          </li>
+          <li>
+            <div class="example-icon"><i class="ti ti-user-check" aria-hidden="true"></i></div>
+            <span><strong>Ben ik nog verantwoordelijk?</strong> AI adviseert — jij beslist. Maar weet jij wanneer dat onderscheid vervaagt?</span>
+          </li>
+        </ul>
+        <p style="font-size:13px; color:var(--color-text-tertiary); margin-top:0.5rem;">In deze les leg je de basis om die vragen te kunnen stellen én beantwoorden.</p>
+      </div>
+
+      <!-- CARD 2: Kern uitleg — wat is AI? -->
+      <div class="card" id="card-2">
+        <h1>Hoe AI anders denkt dan software</h1>
+        <p>De meeste mensen denken dat AI gewoon "slimme software" is. Dat klopt — maar het type slimheid is fundamenteel anders dan wat we gewend zijn.</p>
+        <div class="comparison-grid">
+          <div class="comparison-card" style="border-left:3px solid #CBD5E1;">
+            <div class="comp-label" style="color:var(--color-text-tertiary);">Traditionele software</div>
+            <div class="comp-title">Volgt regels</div>
+            <ul>
+              <li>Een programmeur schrijft elke regel gedrag op</li>
+              <li>Doet exact wat het programma zegt</li>
+              <li>Faalt voorspelbaar: buiten de regels = geen antwoord</li>
+              <li>Voorbeeld: een rekenmachine, een afsprakensysteem</li>
+            </ul>
+          </div>
+          <div class="comparison-card" style="border-left:3px solid #4F46E5;">
+            <div class="comp-label" style="color:#4F46E5;">AI (machine learning)</div>
+            <div class="comp-title">Leert van voorbeelden</div>
+            <ul>
+              <li>Traint op miljoenen voorbeelden en leidt patronen af</li>
+              <li>Genereert nieuwe antwoorden op basis van die patronen</li>
+              <li>Faalt onvoorspelbaar: klinkt zeker, maar kan het mis hebben</li>
+              <li>Voorbeeld: ChatGPT, een spamfilter, gezichtsherkenning</li>
+            </ul>
+          </div>
+        </div>
+        <div class="info-box">
+          <div class="info-box-label">Analogie</div>
+          <p style="font-size:14px; margin:0; line-height:1.65;">Traditionele software is als een kok die een recept volgt: stap voor stap, exact. AI is als een kok die duizenden maaltijden heeft gegeten en zo heeft geleerd wat lekker is — maar soms bedenkt die een gerecht dat er goed uitziet en toch vreselijk smaakt.</p>
+        </div>
+        <p>Dit verschil heeft grote gevolgen: AI kan dingen die programmeurs nooit expliciet hebben opgeschreven, maar is daardoor ook moeilijker te controleren en te vertrouwen.</p>
+      </div>
+
+      <!-- CARD 3: Concreet voorbeeld — scenario Fatima -->
+      <div class="card" id="card-3">
+        <h1>Wat je ziet als je het niet begrijpt</h1>
+        <p>Begrip van AI wordt pas echt zichtbaar als het ontbreekt. Lees dit scenario:</p>
+        <div class="scenario-box">
+          <div class="scenario-header">
+            <div class="scenario-avatar">FK</div>
+            <div>
+              <div class="scenario-name">Fatima Karimi</div>
+              <div class="scenario-role">Klantmanager, sociale dienst — 9 jaar ervaring</div>
+            </div>
+          </div>
+          <div class="scenario-body">
+            <p>Fatima gebruikt een AI-tool om casusbrieven samen te vatten. Ze is enthousiast: "Het bespaart me minstens een uur per dag." Maar ze merkt een paar dingen op die haar ongemakkelijk maken.</p>
+            <p>De tool schrijft in een brief dat een cliënt <span class="highlight-word">geen recht heeft op bijzondere bijstand</span> — terwijl Fatima weet dat de cliënt wél recht heeft, maar op een andere regeling. De formulering is zelfverzekerd, de toon professioneel. Als Fatima het niet had geweten, had ze het doorgestuurd.</p>
+            <p>Een collega vertelt haar dat hij vorige week persoonsgegevens van een cliënt in de tool heeft geplakt om een brief te laten schrijven. "Werkt super," zegt hij. Fatima vraagt zich af of dat eigenlijk mag.</p>
+          </div>
+        </div>
+        <div class="blockquote">
+          <p>Dit zijn geen uitzonderingen. Dit zijn de dagelijkse risico's van AI-gebruik zonder AI-begrip. Niet door nalatigheid, maar door gebrek aan kennis.</p>
+        </div>
+        <p>Fatima's situatie illustreert precies waarom AI-geletterdheid voor iedereen geldt die met AI-tools werkt — niet alleen voor technici of managers.</p>
+      </div>
+
+      <!-- CARD 4: Verbinding naar werksituatie -->
+      <div class="card" id="card-4">
+        <h1>AI in jouw werksituatie</h1>
+        <p>AI-tools zijn er in veel vormen. Sommige zijn zichtbaar — je weet dat je een AI gebruikt. Andere zijn onzichtbaar verwerkt in systemen die je al lang gebruikt.</p>
+        <div class="info-box">
+          <div class="info-box-label">Voorbeelden die je mogelijk herkent</div>
+          <ul class="example-list" style="margin:0;">
+            <li>
+              <div class="example-icon"><i class="ti ti-mail" aria-hidden="true"></i></div>
+              <span>Je e-mailprogramma filtert automatisch spam en sorteert berichten op prioriteit</span>
+            </li>
+            <li>
+              <div class="example-icon"><i class="ti ti-file-text" aria-hidden="true"></i></div>
+              <span>Een teksttool stelt zinnen voor, corrigeert automatisch of schrijft een hele alinea voor je</span>
+            </li>
+            <li>
+              <div class="example-icon"><i class="ti ti-chart-bar" aria-hidden="true"></i></div>
+              <span>Een systeem geeft risicobeoordelingen of prioriteringsscores op basis van dossierdata</span>
+            </li>
+            <li>
+              <div class="example-icon"><i class="ti ti-message-circle" aria-hidden="true"></i></div>
+              <span>Een chatbot beantwoordt vragen van burgers of collega's als eerste contact</span>
+            </li>
+            <li>
+              <div class="example-icon"><i class="ti ti-search" aria-hidden="true"></i></div>
+              <span>Zoekopdrachten leveren samengevatte antwoorden op in plaats van losse links</span>
+            </li>
+          </ul>
+        </div>
+        <p>AI-geletterdheid helpt je om bij elk van deze tools dezelfde vragen te stellen: <span class="highlight-word">wat doet dit systeem precies?</span> <span class="highlight-word">Op basis van welke data?</span> <span class="highlight-word">En wie is er verantwoordelijk als het fout gaat?</span></p>
+        <p style="font-size:14px;">In de volgende lessen ga je precies leren hoe je die vragen beantwoordt.</p>
+      </div>
+
+      <!-- CARD 5: Reflectievraag -->
+      <div class="card" id="card-5">
+        <h1>Even nadenken: jouw eigen situatie</h1>
+        <p>Voordat we verdergaan: een korte reflectie. Herken je één van de onderstaande situaties uit je eigen werk?</p>
+        <p style="font-size:13px; color:var(--color-text-tertiary);">Kies de situatie die het meest op jou van toepassing is. Er is geen goed of fout antwoord.</p>
+        <div class="reflect-options" id="reflect-opts">
+          <div class="reflect-opt" onclick="selectOpt(this, 'a')">
+            <div class="check-circle"></div>
+            <span>Ik gebruik AI-tools, maar weet eigenlijk niet precies hoe ze werken of wat ze met mijn input doen.</span>
+          </div>
+          <div class="reflect-opt" onclick="selectOpt(this, 'b')">
+            <div class="check-circle"></div>
+            <span>Ik weet dat AI in onze systemen zit, maar ik heb er weinig controle over en vraag me af of ik dat zou moeten hebben.</span>
+          </div>
+          <div class="reflect-opt" onclick="selectOpt(this, 'c')">
+            <div class="check-circle"></div>
+            <span>Ik gebruik AI nauwelijks, maar merk dat collega's het wel doen en vraag me af of ik iets mis.</span>
+          </div>
+          <div class="reflect-opt" onclick="selectOpt(this, 'd')">
+            <div class="check-circle"></div>
+            <span>Ik gebruik AI regelmatig en bewust, maar wil mijn kennis verdiepen om beter te kunnen oordelen wanneer ik iets vertrouw of niet.</span>
+          </div>
+        </div>
+        <div class="reflect-feedback" id="reflect-feedback-a">
+          <strong>Dat herkennen veel professionals.</strong> AI-tools worden snel uitgerold, soms sneller dan de uitleg erbij. Precies daarom is deze cursus er: niet om je alles te laten begrijpen, maar om je genoeg te laten begrijpen om de juiste vragen te stellen.
+        </div>
+        <div class="reflect-feedback" id="reflect-feedback-b">
+          <strong>Een terechte zorg.</strong> Veel AI in organisaties is onzichtbaar ingebouwd. In module 3 gaan we in op hoe je als professional invloed houdt — ook als jij de tool niet hebt gekozen.
+        </div>
+        <div class="reflect-feedback" id="reflect-feedback-c">
+          <strong>Goede instelling om het te willen begrijpen.</strong> Niet meegaan met elke hype is verstandig. Maar weten wat AI is en kan, helpt je om bewust te kiezen — voor of tegen gebruik.
+        </div>
+        <div class="reflect-feedback" id="reflect-feedback-d">
+          <strong>Uitstekend vertrekpunt.</strong> In module 2 en 3 ga je dieper in op hoe je AI-output beoordeelt en wanneer je het vertrouwt. Dat is precies het niveau waar jij naartoe werkt.
+        </div>
+      </div>
+
+      <!-- CARD 6: Samenvatting + brug -->
+      <div class="card" id="card-6">
+        <div class="completion-wrap">
+          <div class="completion-badge">
+            <i class="ti ti-circle-check" aria-hidden="true"></i>
+            Les 1 afgerond
+          </div>
+          <div class="completion-title">Je begrijpt nu waarom AI-begrip ertoe doet</div>
+          <div class="completion-sub">Niet als leuk weetje, maar als professionele basisvaardigheid voor iedereen die met AI-tools werkt.</div>
+        </div>
+        <div class="takeaways">
+          <div class="takeaways-label">Wat je hebt geleerd</div>
+          <ul>
+            <li><span class="tk-check">✓</span> AI werkt anders dan traditionele software: het leert van patronen, volgt geen vaste regels</li>
+            <li><span class="tk-check">✓</span> Daardoor kan AI zelfverzekerd fout zijn — en dat vraagt alertheid van jou als gebruiker</li>
+            <li><span class="tk-check">✓</span> AI-tools zitten al in veel systemen die je dagelijks gebruikt, zichtbaar en onzichtbaar</li>
+            <li><span class="tk-check">✓</span> AI-geletterdheid begint bij drie vragen: klopt dit? Is dit veilig? Wie is verantwoordelijk?</li>
+          </ul>
+        </div>
+        <div class="next-preview">
+          <div style="width:36px;height:36px;border-radius:var(--border-radius-md);background:#EEF2FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="ti ti-arrow-right" style="color:#4F46E5;font-size:18px;" aria-hidden="true"></i>
+          </div>
+          <div>
+            <div class="next-badge">Volgende les</div>
+            <div class="next-title">Wat verstaan we onder AI? — definities, vormen en toepassingen</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="nav-bar">
+      <button class="nav-btn" id="btn-prev" onclick="navigate(-1)" disabled>← Vorige</button>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <div class="dots" id="dots"></div>
+        <div class="step-indicator" id="step-ind">1 van 6</div>
+      </div>
+      <button class="nav-btn primary" id="btn-next" onclick="navigate(1)">Volgende →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let current = 1;
+const total = 6;
+
+function buildDots() {
+  const c = document.getElementById('dots');
+  c.innerHTML = '';
+  for (let i = 1; i <= total; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === current ? ' active' : (i < current ? ' done' : ''));
+    d.onclick = () => goTo(i);
+    c.appendChild(d);
+  }
+}
+
+function updateSidebar() {
+  for (let i = 1; i <= 6; i++) {
+    const el = document.getElementById('nav-' + i);
+    if (!el) continue;
+    el.className = 'sidebar-item' + (i === 1 ? (i < current ? ' done' : (i === current ? ' active' : '')) : (i < current ? ' done' : (i === current ? ' active' : '')));
+    const num = el.querySelector('.num');
+    if (i < current) {
+      num.innerHTML = '<i class="ti ti-check" style="font-size:11px;" aria-hidden="true"></i>';
+      el.classList.add('done');
+    } else {
+      num.textContent = i;
+    }
+  }
+}
+
+function goTo(n) {
+  if (n < 1 || n > total) return;
+  document.getElementById('card-' + current).classList.remove('active');
+  current = n;
+  document.getElementById('card-' + current).classList.add('active');
+  document.getElementById('btn-prev').disabled = current === 1;
+  document.getElementById('btn-next').textContent = current === total ? 'Naar volgende les →' : 'Volgende →';
+  document.getElementById('lesson-badge').textContent = 'MODULE 01 · LES 1/6 · CARD ' + current + ' VAN ' + total;
+  document.getElementById('step-ind').textContent = current + ' van ' + total;
+  buildDots();
+  updateSidebar();
+}
+
+function navigate(dir) { goTo(current + dir); }
+
+function selectOpt(el, key) {
+  document.querySelectorAll('.reflect-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  document.querySelectorAll('.reflect-feedback').forEach(f => f.style.display = 'none');
+  const fb = document.getElementById('reflect-feedback-' + key);
+  if (fb) fb.style.display = 'block';
+}
+
+buildDots();
+updateSidebar();
+</script>
