@@ -3,823 +3,476 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Module 01 &mdash; Wat is AI eigenlijk?</title>
+<title>Les 2 &mdash; Wat verstaan we onder AI?</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{
-  --ww:#FAF8F5;--wc:#F2EDE5;--wl:#EBE4D9;--wb:#D6CFC4;--wm:#C4B9AB;
-  --ac:#8B6F4E;--al:#F7F1E8;--ad:#6B4F33;
-  --td:#1C1714;--tm:#3D3530;--tu:#7A6E66;--tf:#9C8E7E;
-  --gb:#EAF4EE;--gbo:#A8D5B5;--gt:#2D6A4F;
-  --hb:#F5ECD8;--ht:#6B4520;
-}
-html{font-size:16px;}
-body{font-family:"Source Sans 3",system-ui,sans-serif;background:#F0EBE3;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:2.5rem 1rem 4rem;color:var(--tm);}
-.shell{width:100%;max-width:900px;display:flex;border:1px solid var(--wb);border-radius:18px;overflow:hidden;background:var(--ww);min-height:600px;}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* sidebar */
-.sb{width:218px;flex-shrink:0;background:var(--wc);border-right:1px solid var(--wb);padding:1.75rem 0 1.5rem;}
-.sb-mod{padding:0 1.25rem 1rem;border-bottom:1px solid var(--wb);margin-bottom:1rem;}
-.sb-lbl{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--tf);margin-bottom:3px;}
-.sb-mod-title{font-size:13px;font-weight:500;color:var(--td);line-height:1.4;}
-.sb-sec-lbl{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--tf);padding:0 1.25rem;margin-bottom:.3rem;}
-.sb-item{display:flex;align-items:flex-start;gap:9px;padding:6px 1.25rem;cursor:pointer;border-left:2.5px solid transparent;transition:background .15s;}
-.sb-item:hover{background:var(--wl);}
-.sb-item.active{background:var(--wl);border-left-color:var(--ac);}
-.sb-item.done .nd{background:var(--ac);border-color:var(--ac);color:#FAF8F5;}
-.sb-item.active .nd{border-color:var(--ac);color:var(--ac);}
-.nd{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--wm);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--tf);flex-shrink:0;margin-top:1px;}
-.sb-item-text{font-size:12px;color:var(--tu);line-height:1.4;}
-.sb-item.active .sb-item-text{color:var(--td);font-weight:600;}
-.sb-item.done .sb-item-text{color:var(--tf);}
-.sb-div{height:1px;background:var(--wb);margin:.75rem 1.25rem;}
+  :root {
+    --warm-white:   #FAF8F5;
+    --warm-cream:   #F2EDE5;
+    --warm-linen:   #EBE4D9;
+    --warm-border:  #D6CFC4;
+    --warm-muted:   #C4B9AB;
+    --accent:       #8B6F4E;
+    --accent-light: #F7F1E8;
+    --accent-dark:  #6B4F33;
+    --text-dark:    #1C1714;
+    --text-mid:     #3D3530;
+    --text-muted:   #7A6E66;
+    --text-faint:   #9C8E7E;
+    --green-bg:     #EAF4EE;
+    --green-border: #A8D5B5;
+    --green-text:   #2D6A4F;
+    --highlight-bg: #F5ECD8;
+    --highlight-txt:#6B4520;
+  }
 
-/* main */
-.main{flex:1;display:flex;flex-direction:column;min-width:0;}
-.top-bar{padding:1.75rem 2.5rem 1.25rem;border-bottom:1px solid var(--wb);}
-.pill{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--ad);background:var(--hb);border:1px solid var(--wm);padding:4px 14px;border-radius:999px;}
-.card-zone{flex:1;padding:2rem 2.5rem 1.25rem;overflow-y:auto;}
-.section{display:none;}
-.section.active{display:block;}
-.card{display:none;}
-.card.active{display:block;animation:fadeUp .28s ease;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  html { font-size: 16px; }
 
-/* typography */
-.card h1{font-family:"Lora",Georgia,serif;font-size:30px;font-weight:400;color:var(--td);line-height:1.25;margin-bottom:1.25rem;}
-.card p{font-size:15.5px;line-height:1.85;color:var(--tm);margin-bottom:.9rem;}
-.bq{border-left:3px solid var(--ac);background:var(--al);border-radius:0 10px 10px 0;padding:1rem 1.35rem;margin:1.25rem 0;}
-.bq p{font-family:"Lora",Georgia,serif;font-size:15px;color:var(--ad);font-style:italic;margin:0;line-height:1.75;}
-.infobox{background:var(--wc);border:1px solid var(--wb);border-radius:12px;padding:1.1rem 1.35rem;margin:1.1rem 0;}
-.ibl{font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--tf);margin-bottom:.6rem;}
-.hw{background:var(--hb);color:var(--ht);border-radius:4px;padding:1px 6px;font-weight:600;font-size:.94em;}
+  body {
+    font-family: 'Source Sans 3', system-ui, sans-serif;
+    background: #F0EBE3;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2.5rem 1rem 4rem;
+    color: var(--text-mid);
+  }
 
-/* lists */
-.ex-list{list-style:none;padding:0;margin:.75rem 0;}
-.ex-list li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--wb);font-size:14.5px;color:var(--tm);line-height:1.6;}
-.ex-list li:last-child{border-bottom:none;}
-.ei{width:30px;height:30px;border-radius:8px;background:var(--hb);color:var(--ac);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+  .shell {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    border: 1px solid var(--warm-border);
+    border-radius: 18px;
+    overflow: hidden;
+    background: var(--warm-white);
+    min-height: 600px;
+  }
 
-/* compare */
-.cg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:1.1rem 0;}
-.cc{border:1px solid var(--wb);border-radius:12px;padding:1rem 1.1rem;background:var(--ww);}
-.cc-lbl{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;}
-.cc-title{font-size:14px;font-weight:600;color:var(--td);margin-bottom:8px;}
-.cc ul{list-style:none;padding:0;}
-.cc ul li{font-size:13px;color:var(--tu);padding:3px 0;display:flex;gap:6px;line-height:1.45;}
-.cc ul li::before{content:"&rarr;";color:var(--wm);flex-shrink:0;}
+  .sb {
+    width: 218px;
+    flex-shrink: 0;
+    background: var(--warm-cream);
+    border-right: 1px solid var(--warm-border);
+    padding: 1.75rem 0 1.5rem;
+  }
+  .sb-mod { padding: 0 1.25rem 1rem; border-bottom: 1px solid var(--warm-border); margin-bottom: 1rem; }
+  .sb-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 3px; }
+  .sb-mod-title { font-size: 13px; font-weight: 500; color: var(--text-dark); line-height: 1.4; }
+  .sb-section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); padding: 0 1.25rem; margin-bottom: 0.3rem; }
+  .sb-item { display: flex; align-items: flex-start; gap: 9px; padding: 6px 1.25rem; cursor: pointer; border-left: 2.5px solid transparent; transition: background 0.15s; }
+  .sb-item:hover { background: var(--warm-linen); }
+  .sb-item.active { background: var(--warm-linen); border-left-color: var(--accent); }
+  .sb-item.done .num-dot { background: var(--accent); border-color: var(--accent); color: #FAF8F5; }
+  .sb-item.active .num-dot { border-color: var(--accent); color: var(--accent); }
+  .num-dot { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--warm-muted); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; color: var(--text-faint); flex-shrink: 0; margin-top: 1px; }
+  .sb-item-text { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+  .sb-item.active .sb-item-text { color: var(--text-dark); font-weight: 600; }
+  .sb-item.done .sb-item-text { color: var(--text-faint); }
+  .sb-divider { height: 1px; background: var(--warm-border); margin: 0.75rem 1.25rem; }
 
-/* forms grid */
-.fg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:1.1rem 0;}
-.fc{border:1px solid var(--wb);border-radius:12px;padding:1rem;background:var(--ww);}
-.fc-icon{font-size:22px;margin-bottom:.5rem;}
-.fc-tag{display:inline-block;font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-bottom:6px;}
-.fc-title{font-size:13px;font-weight:600;color:var(--td);margin-bottom:4px;}
-.fc-desc{font-size:12.5px;color:var(--tu);line-height:1.55;margin-bottom:6px;}
-.fc-ex{font-size:11.5px;color:var(--tf);font-style:italic;}
+  .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 
-/* systems */
-.sg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:1.1rem 0;}
-.sc{border:1px solid var(--wb);border-radius:12px;padding:.9rem 1rem;background:var(--ww);display:flex;align-items:flex-start;gap:10px;}
-.si{width:34px;height:34px;border-radius:9px;background:var(--hb);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
-.sn{font-size:13px;font-weight:600;color:var(--td);margin-bottom:2px;}
-.sd{font-size:12.5px;color:var(--tu);line-height:1.5;}
+  .top-bar { padding: 1.75rem 2.5rem 1.25rem; border-bottom: 1px solid var(--warm-border); }
+  .lesson-pill { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; color: var(--accent-dark); background: var(--highlight-bg); border: 1px solid var(--warm-muted); padding: 4px 14px; border-radius: 999px; font-family: 'Source Sans 3', sans-serif; }
 
-/* timeline */
-.tl{margin:1.25rem 0;display:flex;flex-direction:column;}
-.tli{display:flex;gap:1rem;padding-bottom:1.25rem;}
-.tli:last-child{padding-bottom:0;}
-.tll{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:36px;}
-.tld{width:12px;height:12px;border-radius:50%;background:var(--ac);border:2px solid var(--ww);outline:2px solid var(--ac);flex-shrink:0;}
-.tlln{flex:1;width:2px;background:var(--wb);margin-top:4px;}
-.tli:last-child .tlln{display:none;}
-.tly{font-size:11px;font-weight:600;color:var(--ac);margin-bottom:2px;letter-spacing:.04em;}
-.tlt{font-size:14px;font-weight:600;color:var(--td);margin-bottom:3px;}
-.tlx{font-size:13.5px;color:var(--tu);line-height:1.6;}
+  .card-zone { flex: 1; padding: 2rem 2.5rem 1.25rem; overflow-y: auto; }
 
-/* app list */
-.al{list-style:none;padding:0;margin:.75rem 0;}
-.al li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--wb);font-size:14.5px;color:var(--tm);line-height:1.6;}
-.al li:last-child{border-bottom:none;}
+  .card { display: none; }
+  .card.active { display: block; animation: fadeUp 0.28s ease; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-/* reflection / quiz options */
-.ropts{display:flex;flex-direction:column;gap:8px;margin:1rem 0;}
-.ropt{border:1px solid var(--wb);border-radius:10px;padding:.85rem 1rem;cursor:pointer;display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:var(--td);line-height:1.6;background:var(--ww);transition:background .15s,border-color .15s;}
-.ropt:hover{background:var(--wc);}
-.ropt.sel{border-color:var(--ac);background:var(--al);}
-.ropt.correct{border-color:#3A8C5C;background:#EAF4EE;}
-.ropt.wrong{border-color:#B85050;background:#FDF0F0;}
-.ropt.disabled{cursor:default;pointer-events:none;}
-.rc{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--wm);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;}
-.ropt.sel .rc{background:var(--ac);border-color:var(--ac);}
-.ropt.sel .rc::after,.ropt.correct .rc::after{content:"\2713";color:#fff;font-size:10px;font-weight:700;}
-.ropt.correct .rc{background:#3A8C5C;border-color:#3A8C5C;}
-.ropt.wrong .rc{background:#B85050;border-color:#B85050;}
-.ropt.wrong .rc::after{content:"\00D7";color:#fff;font-size:11px;font-weight:700;}
-.rfb{margin-top:.75rem;padding:.85rem 1rem;border-radius:10px;background:var(--wc);font-size:14px;color:var(--tm);line-height:1.7;display:none;}
+  .card h1 { font-family: 'Lora', Georgia, serif; font-size: 30px; font-weight: 400; color: var(--text-dark); line-height: 1.25; margin-bottom: 1.25rem; }
+  .card p { font-size: 15.5px; line-height: 1.85; color: var(--text-mid); margin-bottom: 0.9rem; }
 
-/* scenario */
-.sbox{border:1px solid var(--wb);border-radius:12px;overflow:hidden;margin:1.1rem 0;}
-.shead{background:var(--wc);padding:.85rem 1.25rem;border-bottom:1px solid var(--wb);display:flex;align-items:center;gap:10px;}
-.av{width:36px;height:36px;border-radius:50%;background:var(--ac);color:#FAF8F5;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;}
-.sn2{font-size:13px;font-weight:600;color:var(--td);}
-.sr{font-size:11px;color:var(--tf);}
-.sbody{padding:1.1rem 1.25rem;background:var(--ww);}
-.sbody p{margin-bottom:.65rem;font-size:14.5px;line-height:1.75;}
+  .bq { border-left: 3px solid var(--accent); background: var(--accent-light); border-radius: 0 10px 10px 0; padding: 1rem 1.35rem; margin: 1.25rem 0; }
+  .bq p { font-family: 'Lora', Georgia, serif; font-size: 15px; color: var(--accent-dark); font-style: italic; margin: 0; line-height: 1.75; }
 
-/* done / takeaways */
-.dw{text-align:center;padding:.5rem 0 1.25rem;}
-.dp{display:inline-flex;align-items:center;gap:7px;background:var(--gb);border:1px solid var(--gbo);border-radius:999px;padding:6px 18px;font-size:13px;font-weight:600;color:var(--gt);margin-bottom:1.25rem;}
-.dt{font-family:"Lora",Georgia,serif;font-size:23px;font-weight:400;color:var(--td);margin-bottom:.5rem;}
-.ds{font-size:14.5px;color:var(--tu);margin-bottom:1.5rem;line-height:1.75;}
-.tks{text-align:left;background:var(--wc);border-radius:12px;border:1px solid var(--wb);padding:1.1rem 1.35rem;margin-bottom:1.25rem;}
-.tkl{font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--tf);margin-bottom:.6rem;}
-.tks ul{list-style:none;padding:0;}
-.tks ul li{font-size:14px;color:var(--tm);padding:5px 0;display:flex;gap:9px;line-height:1.6;}
-.tkc{color:var(--gt);font-weight:700;flex-shrink:0;}
-.nc{border:1px solid var(--wb);border-radius:12px;padding:.9rem 1.1rem;display:flex;align-items:center;gap:12px;background:var(--ww);}
-.ni{width:36px;height:36px;border-radius:10px;background:var(--hb);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-.nb{font-size:10px;color:var(--tf);text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px;}
-.nt{font-size:14px;font-weight:600;color:var(--td);}
+  .infobox { background: var(--warm-cream); border: 1px solid var(--warm-border); border-radius: 12px; padding: 1.1rem 1.35rem; margin: 1.1rem 0; }
+  .infobox-label { font-size: 10px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 0.6rem; }
 
-/* oefening game */
-.game-item{text-align:center;padding:1rem 0;}
-.game-scenario{background:var(--wc);border:1px solid var(--wb);border-radius:14px;padding:1.5rem 1.75rem;margin:1.25rem 0;font-size:16px;color:var(--td);line-height:1.7;text-align:left;}
-.game-btns{display:flex;gap:12px;justify-content:center;margin:1.25rem 0;}
-.game-btn{padding:11px 32px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;border:1.5px solid var(--wb);background:var(--ww);color:var(--td);font-family:"Source Sans 3",sans-serif;transition:all .15s;}
-.game-btn:hover{border-color:var(--ac);background:var(--al);}
-.game-btn.ai-btn:hover{border-color:#3A8C5C;background:#EAF4EE;}
-.game-btn.noai-btn:hover{border-color:#B85050;background:#FDF0F0;}
-.game-reveal{display:none;margin-top:1rem;padding:1rem 1.25rem;border-radius:12px;font-size:14.5px;line-height:1.7;}
-.game-reveal.correct{background:#EAF4EE;border:1px solid var(--gbo);color:#1A4A2E;}
-.game-reveal.wrong{background:#FDF0F0;border:1px solid #F0ADAD;color:#4A1A1A;}
-.score-big{font-size:48px;font-weight:700;color:var(--ac);margin:.5rem 0;}
-.score-lbl{font-size:14px;color:var(--tu);}
+  .hw { background: var(--highlight-bg); color: var(--highlight-txt); border-radius: 4px; padding: 1px 6px; font-weight: 600; font-size: 0.94em; }
 
-/* quiz */
-.quiz-num{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--tf);margin-bottom:.5rem;}
-.quiz-q{font-family:"Lora",Georgia,serif;font-size:20px;font-weight:400;color:var(--td);line-height:1.4;margin-bottom:1.25rem;}
-.quiz-fb{display:none;margin-top:.75rem;padding:.85rem 1rem;border-radius:10px;font-size:14px;color:var(--tm);line-height:1.7;}
-.quiz-fb.c{background:#EAF4EE;border:1px solid var(--gbo);}
-.quiz-fb.w{background:#FDF0F0;border:1px solid #F0ADAD;}
-.result-circle{width:90px;height:90px;border-radius:50%;background:var(--al);border:3px solid var(--ac);display:flex;align-items:center;justify-content:center;flex-direction:column;margin:0 auto 1.25rem;}
-.result-num{font-size:28px;font-weight:700;color:var(--ac);}
-.result-tot{font-size:12px;color:var(--ad);}
+  /* Tijdlijn */
+  .timeline { margin: 1.25rem 0; display: flex; flex-direction: column; gap: 0; }
+  .tl-item { display: flex; gap: 1rem; padding-bottom: 1.25rem; position: relative; }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 36px; }
+  .tl-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); border: 2px solid var(--warm-white); outline: 2px solid var(--accent); flex-shrink: 0; }
+  .tl-line { flex: 1; width: 2px; background: var(--warm-border); margin-top: 4px; }
+  .tl-item:last-child .tl-line { display: none; }
+  .tl-year { font-size: 11px; font-weight: 600; color: var(--accent); margin-bottom: 2px; letter-spacing: 0.04em; }
+  .tl-title { font-size: 14px; font-weight: 600; color: var(--text-dark); margin-bottom: 3px; }
+  .tl-text { font-size: 13.5px; color: var(--text-muted); line-height: 1.6; }
 
-/* nav */
-.nav-bar{padding:1.1rem 2.5rem;border-top:1px solid var(--wb);display:flex;align-items:center;justify-content:space-between;background:var(--ww);}
-.nav-btn{padding:9px 22px;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;border:1px solid var(--wb);background:var(--ww);color:var(--tm);font-family:"Source Sans 3",sans-serif;transition:background .15s;}
-.nav-btn:hover{background:var(--wc);}
-.nav-btn.pri{background:var(--ac);color:#FAF8F5;border-color:var(--ac);}
-.nav-btn.pri:hover{background:var(--ad);}
-.nav-btn:disabled{opacity:.3;cursor:default;}
-.dots-row{display:flex;gap:6px;align-items:center;}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--wb);cursor:pointer;transition:all .2s;}
-.dot.active{background:var(--ac);width:20px;border-radius:4px;}
-.dot.done{background:#C4A882;}
-.step-txt{font-size:12px;color:var(--tf);text-align:center;margin-top:4px;}
+  /* Vormen kaarten */
+  .forms-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 1.1rem 0; }
+  .form-card { border: 1px solid var(--warm-border); border-radius: 12px; padding: 1rem; background: var(--warm-white); }
+  .form-icon { font-size: 22px; margin-bottom: 0.5rem; }
+  .form-tag { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; margin-bottom: 6px; }
+  .form-title { font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 4px; }
+  .form-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.55; margin-bottom: 6px; }
+  .form-example { font-size: 11.5px; color: var(--text-faint); font-style: italic; }
+
+  /* Systemen grid */
+  .sys-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 1.1rem 0; }
+  .sys-card { border: 1px solid var(--warm-border); border-radius: 12px; padding: 0.9rem 1rem; background: var(--warm-white); display: flex; align-items: flex-start; gap: 10px; }
+  .sys-icon { width: 34px; height: 34px; border-radius: 9px; background: var(--highlight-bg); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .sys-name { font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 2px; }
+  .sys-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
+
+  /* Toepassingen */
+  .app-list { list-style: none; padding: 0; margin: 0.75rem 0; }
+  .app-list li { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--warm-border); font-size: 14.5px; color: var(--text-mid); line-height: 1.6; }
+  .app-list li:last-child { border-bottom: none; }
+  .app-icon { width: 30px; height: 30px; border-radius: 8px; background: var(--highlight-bg); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+
+  /* Reflectie */
+  .reflect-opts { display: flex; flex-direction: column; gap: 8px; margin: 1rem 0; }
+  .r-opt { border: 1px solid var(--warm-border); border-radius: 10px; padding: 0.85rem 1rem; cursor: pointer; display: flex; align-items: flex-start; gap: 10px; font-size: 14.5px; color: var(--text-dark); line-height: 1.6; background: var(--warm-white); transition: background 0.15s, border-color 0.15s; }
+  .r-opt:hover { background: var(--warm-cream); }
+  .r-opt.sel { border-color: var(--accent); background: var(--accent-light); }
+  .r-circle { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--warm-muted); flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; }
+  .r-opt.sel .r-circle { background: var(--accent); border-color: var(--accent); }
+  .r-opt.sel .r-circle::after { content: "&#10003;"; color: #FAF8F5; font-size: 10px; font-weight: 700; }
+  .r-fb { margin-top: 0.75rem; padding: 0.85rem 1rem; border-radius: 10px; background: var(--warm-cream); font-size: 14px; color: var(--text-mid); line-height: 1.7; display: none; }
+
+  /* Afsluiting */
+  .done-wrap { text-align: center; padding: 0.5rem 0 1.25rem; }
+  .done-pill { display: inline-flex; align-items: center; gap: 7px; background: var(--green-bg); border: 1px solid var(--green-border); border-radius: 999px; padding: 6px 18px; font-size: 13px; font-weight: 600; color: var(--green-text); margin-bottom: 1.25rem; }
+  .done-title { font-family: 'Lora', Georgia, serif; font-size: 23px; font-weight: 400; color: var(--text-dark); margin-bottom: 0.5rem; }
+  .done-sub { font-size: 14.5px; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.75; }
+  .takeaways { text-align: left; background: var(--warm-cream); border-radius: 12px; border: 1px solid var(--warm-border); padding: 1.1rem 1.35rem; margin-bottom: 1.25rem; }
+  .tk-label { font-size: 10px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 0.6rem; }
+  .takeaways ul { list-style: none; padding: 0; }
+  .takeaways ul li { font-size: 14px; color: var(--text-mid); padding: 5px 0; display: flex; gap: 9px; line-height: 1.6; }
+  .tk-check { color: var(--green-text); font-weight: 700; flex-shrink: 0; }
+  .next-card { border: 1px solid var(--warm-border); border-radius: 12px; padding: 0.9rem 1.1rem; display: flex; align-items: center; gap: 12px; background: var(--warm-white); }
+  .next-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--highlight-bg); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .next-badge { font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 2px; }
+  .next-title-text { font-size: 14px; font-weight: 600; color: var(--text-dark); }
+
+  /* Navigatie */
+  .nav-bar { padding: 1.1rem 2.5rem; border-top: 1px solid var(--warm-border); display: flex; align-items: center; justify-content: space-between; background: var(--warm-white); }
+  .nav-btn { padding: 9px 22px; border-radius: 9px; font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid var(--warm-border); background: var(--warm-white); color: var(--text-mid); font-family: 'Source Sans 3', sans-serif; transition: background 0.15s; }
+  .nav-btn:hover { background: var(--warm-cream); }
+  .nav-btn.pri { background: var(--accent); color: #FAF8F5; border-color: var(--accent); }
+  .nav-btn.pri:hover { background: var(--accent-dark); }
+  .nav-btn:disabled { opacity: 0.3; cursor: default; }
+  .dots-row { display: flex; gap: 6px; align-items: center; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--warm-border); cursor: pointer; transition: all 0.2s; }
+  .dot.active { background: var(--accent); width: 20px; border-radius: 4px; }
+  .dot.done { background: #C4A882; }
+  .step-txt { font-size: 12px; color: var(--text-faint); text-align: center; margin-top: 4px; }
 </style>
 </head>
 <body>
+
 <div class="shell">
 
-<!-- Sidebar -->
-<div class="sb">
-  <div class="sb-mod">
-    <div class="sb-lbl">Module 01</div>
-    <div class="sb-mod-title">Wat is AI eigenlijk?</div>
+  <div class="sb">
+    <div class="sb-mod">
+      <div class="sb-label">Module 01</div>
+      <div class="sb-mod-title">Wat is AI eigenlijk?</div>
+    </div>
+    <div class="sb-section-label">Lessen</div>
+    <div class="sb-item done" onclick="goTo(1)">
+      <div class="num-dot">&#10003;</div>
+      <div class="sb-item-text">Waarom AI-begrip belangrijk is</div>
+    </div>
+    <div class="sb-item active" id="nav-1" onclick="goTo(1)">
+      <div class="num-dot">2</div>
+      <div class="sb-item-text">Wat verstaan we onder AI?</div>
+    </div>
+    <div class="sb-item" id="nav-3">
+      <div class="num-dot">3</div>
+      <div class="sb-item-text">Traditionele software vs. AI</div>
+    </div>
+    <div class="sb-item" id="nav-4">
+      <div class="num-dot">4</div>
+      <div class="sb-item-text">Waarom AI menselijk lijkt</div>
+    </div>
+    <div class="sb-item" id="nav-5">
+      <div class="num-dot">5</div>
+      <div class="sb-item-text">Hallucinaties: overtuigend fout</div>
+    </div>
+    <div class="sb-item" id="nav-6">
+      <div class="num-dot">6</div>
+      <div class="sb-item-text">Samenvatting</div>
+    </div>
+    <div class="sb-divider"></div>
+    <div class="sb-section-label">Oefening</div>
+    <div class="sb-item">
+      <div class="num-dot" style="font-size:14px;">&#9889;</div>
+      <div class="sb-item-text">AI of geen AI?</div>
+    </div>
+    <div class="sb-section-label" style="margin-top:0.5rem;">Quiz</div>
+    <div class="sb-item">
+      <div class="num-dot">?</div>
+      <div class="sb-item-text">5 kennischeck-vragen</div>
+    </div>
   </div>
 
-  <div class="sb-sec-lbl">Lessen</div>
-  <div class="sb-item active" id="si-les1" onclick="jumpTo('les1',1)">
-    <div class="nd" id="nd-les1">1</div>
-    <div class="sb-item-text">Waarom AI-begrip belangrijk is</div>
-  </div>
-  <div class="sb-item" id="si-les2" onclick="jumpTo('les2',1)">
-    <div class="nd" id="nd-les2">2</div>
-    <div class="sb-item-text">Wat verstaan we onder AI?</div>
-  </div>
-
-  <div class="sb-div"></div>
-  <div class="sb-sec-lbl">Oefening</div>
-  <div class="sb-item" id="si-oefening" onclick="jumpTo('oefening',1)">
-    <div class="nd" id="nd-oefening" style="font-size:14px;">&#9889;</div>
-    <div class="sb-item-text">AI of geen AI?</div>
-  </div>
-
-  <div class="sb-sec-lbl" style="margin-top:.5rem;">Quiz</div>
-  <div class="sb-item" id="si-quiz" onclick="jumpTo('quiz',1)">
-    <div class="nd" id="nd-quiz">?</div>
-    <div class="sb-item-text">5 kennischeck-vragen</div>
-  </div>
-
-  <div class="sb-div"></div>
-  <div class="sb-sec-lbl">Afronden</div>
-  <div class="sb-item" id="si-done" onclick="jumpTo('afronding',1)">
-    <div class="nd">&#9733;</div>
-    <div class="sb-item-text">Module afronden</div>
-  </div>
-</div>
-
-<!-- Main -->
-<div class="main">
-  <div class="top-bar">
-    <div class="pill" id="pill">Module 01 &nbsp;&middot;&nbsp; Les 1 van 2 &nbsp;&middot;&nbsp; Card 1 van 6</div>
-  </div>
-
-  <div class="card-zone">
-
-    <!-- LES 1 -->
-    <div class="section active" id="sec-les1">
-      <div class="card active" id="l1c1">
-        <h1>Waarom AI-begrip belangrijk is</h1>
-        <p>Kunstmatige intelligentie is verweven in zoekmachines, sociale media, klantenservice, tekstverwerking, navigatie en besluitvorming. Toch gebruiken veel mensen AI zonder te begrijpen wat het is, hoe het werkt en welke invloed het heeft.</p>
-        <div class="bq"><p>AI-geletterdheid begint niet bij tools, maar bij begrip. Pas wanneer we begrijpen hoe AI werkt, kunnen we AI bewust, kritisch en verantwoord gebruiken.</p></div>
-        <p>Stel: je werkt in de publieke dienstverlening. Een AI-tool helpt je om dossiers sneller samen te vatten, brieven te schrijven of vragen van burgers te beantwoorden. Dan zijn dit de drie vragen die je als professional zou moeten kunnen stellen:</p>
-        <ul class="ex-list">
-          <li><div class="ei">&#9888;</div><span><strong>Klopt dit?</strong> AI maakt fouten &mdash; soms overtuigend. Kun jij beoordelen wanneer de output niet te vertrouwen is?</span></li>
-          <li><div class="ei">&#128274;</div><span><strong>Is dit veilig?</strong> Wat mag je delen met een AI-systeem en wat niet? Waar gaan die gegevens naartoe?</span></li>
-          <li><div class="ei">&#10003;</div><span><strong>Ben ik nog verantwoordelijk?</strong> AI adviseert &mdash; jij beslist. Maar weet jij wanneer dat onderscheid vervaagt?</span></li>
-        </ul>
-        <p style="font-size:13.5px;color:var(--tf);">In deze les leg je de basis om die vragen te kunnen stellen &eacute;n beantwoorden.</p>
-      </div>
-
-      <div class="card" id="l1c2">
-        <h1>Hoe AI anders denkt dan software</h1>
-        <p>De meeste mensen denken dat AI gewoon &ldquo;slimme software&rdquo; is. Dat klopt &mdash; maar het type slimheid is fundamenteel anders dan wat we gewend zijn.</p>
-        <div class="cg">
-          <div class="cc" style="border-left:3px solid #C4B9AB;">
-            <div class="cc-lbl" style="color:var(--tf);">Traditionele software</div>
-            <div class="cc-title">Volgt regels</div>
-            <ul>
-              <li>Een programmeur schrijft elk gedrag op</li>
-              <li>Doet exact wat het programma zegt</li>
-              <li>Faalt voorspelbaar: buiten de regels = geen antwoord</li>
-              <li>Bijv: rekenmachine, afsprakensysteem</li>
-            </ul>
-          </div>
-          <div class="cc" style="border-left:3px solid var(--ac);">
-            <div class="cc-lbl" style="color:var(--ac);">AI (machine learning)</div>
-            <div class="cc-title">Leert van voorbeelden</div>
-            <ul>
-              <li>Traint op miljoenen voorbeelden, leidt patronen af</li>
-              <li>Genereert nieuwe antwoorden op die patronen</li>
-              <li>Faalt onvoorspelbaar: klinkt zeker, maar kan mis zijn</li>
-              <li>Bijv: ChatGPT, spamfilter, gezichtsherkenning</li>
-            </ul>
-          </div>
-        </div>
-        <div class="infobox">
-          <div class="ibl">Analogie</div>
-          <p style="font-size:14.5px;margin:0;line-height:1.8;">Traditionele software is als een kok die een recept volgt: stap voor stap, exact. AI is als een kok die duizenden maaltijden heeft gegeten en zo leert wat lekker is &mdash; maar soms bedenkt die een gerecht dat er goed uitziet en toch vreselijk smaakt.</p>
-        </div>
-        <p>Dit verschil heeft grote gevolgen: AI kan dingen die programmeurs nooit expliciet hebben opgeschreven, maar is daardoor ook moeilijker te controleren en te vertrouwen.</p>
-      </div>
-
-      <div class="card" id="l1c3">
-        <h1>Wat je ziet als je het niet begrijpt</h1>
-        <p>Begrip van AI wordt pas echt zichtbaar als het ontbreekt. Lees dit scenario:</p>
-        <div class="sbox">
-          <div class="shead">
-            <div class="av">FK</div>
-            <div><div class="sn2">Fatima Karimi</div><div class="sr">Klantmanager, sociale dienst &mdash; 9 jaar ervaring</div></div>
-          </div>
-          <div class="sbody">
-            <p>Fatima gebruikt een AI-tool om casusbrieven samen te vatten. Ze is enthousiast: &ldquo;Het bespaart me minstens een uur per dag.&rdquo; Maar ze merkt een paar dingen op die haar ongemakkelijk maken.</p>
-            <p>De tool schrijft dat een cli&euml;nt <span class="hw">geen recht heeft op bijzondere bijstand</span> &mdash; terwijl Fatima weet dat de cli&euml;nt w&eacute;l recht heeft, maar op een andere regeling. De formulering is zelfverzekerd, de toon professioneel. Als Fatima het niet had geweten, had ze het doorgestuurd.</p>
-            <p>Een collega vertelt haar dat hij vorige week persoonsgegevens van een cli&euml;nt in de tool heeft geplakt. &ldquo;Werkt super,&rdquo; zegt hij. Fatima vraagt zich af of dat eigenlijk mag.</p>
-          </div>
-        </div>
-        <div class="bq"><p>Dit zijn geen uitzonderingen. Dit zijn de dagelijkse risico&rsquo;s van AI-gebruik zonder AI-begrip. Niet door nalatigheid, maar door gebrek aan kennis.</p></div>
-        <p>Fatima&rsquo;s situatie illustreert waarom AI-geletterdheid voor iedereen geldt die met AI-tools werkt &mdash; niet alleen voor technici of managers.</p>
-      </div>
-
-      <div class="card" id="l1c4">
-        <h1>AI in jouw werksituatie</h1>
-        <p>AI-tools zijn er in veel vormen. Sommige zijn zichtbaar &mdash; je weet dat je een AI gebruikt. Andere zijn onzichtbaar verwerkt in systemen die je al lang gebruikt.</p>
-        <div class="infobox">
-          <div class="ibl">Herken jij een van deze situaties?</div>
-          <ul class="ex-list" style="margin:0;">
-            <li><div class="ei">&#9993;</div><span>Je e-mailprogramma filtert spam en sorteert berichten op prioriteit</span></li>
-            <li><div class="ei">&#128196;</div><span>Een teksttool stelt zinnen voor, corrigeert automatisch of schrijft een alinea voor je</span></li>
-            <li><div class="ei">&#128202;</div><span>Een systeem geeft risicobeoordelingen op basis van dossierdata</span></li>
-            <li><div class="ei">&#128172;</div><span>Een chatbot beantwoordt vragen van burgers als eerste contact</span></li>
-          </ul>
-        </div>
-        <p>AI-geletterdheid helpt je om bij elk van deze tools dezelfde vragen te stellen: <span class="hw">wat doet dit systeem precies?</span> <span class="hw">Op basis van welke data?</span> <span class="hw">Wie is verantwoordelijk als het fout gaat?</span></p>
-        <p style="font-size:14px;color:var(--tu);">In de volgende lessen leer je precies hoe je die vragen beantwoordt.</p>
-      </div>
-
-      <div class="card" id="l1c5">
-        <h1>Even nadenken: jouw eigen situatie</h1>
-        <p>Voordat we verdergaan, een korte reflectie. Herken je een van de onderstaande situaties uit je eigen werk?</p>
-        <p style="font-size:13.5px;color:var(--tf);margin-bottom:.25rem;">Kies de situatie die het meest op jou van toepassing is. Er is geen goed of fout antwoord.</p>
-        <div class="ropts">
-          <div class="ropt" onclick="selRef(this,'a')"><div class="rc"></div><span>Ik gebruik AI-tools, maar weet eigenlijk niet precies hoe ze werken of wat ze met mijn input doen.</span></div>
-          <div class="ropt" onclick="selRef(this,'b')"><div class="rc"></div><span>Ik weet dat AI in onze systemen zit, maar heb er weinig controle over en vraag me af of ik dat zou moeten hebben.</span></div>
-          <div class="ropt" onclick="selRef(this,'c')"><div class="rc"></div><span>Ik gebruik AI nauwelijks, maar merk dat collega&rsquo;s het wel doen en vraag me af of ik iets mis.</span></div>
-          <div class="ropt" onclick="selRef(this,'d')"><div class="rc"></div><span>Ik gebruik AI regelmatig en bewust, maar wil mijn kennis verdiepen om beter te oordelen.</span></div>
-        </div>
-        <div class="rfb" id="rf-a">Dat herkennen veel professionals. AI-tools worden snel uitgerold, soms sneller dan de uitleg erbij. Precies daarom is deze cursus er: niet om je alles te laten begrijpen, maar genoeg om de juiste vragen te stellen.</div>
-        <div class="rfb" id="rf-b">Een terechte zorg. Veel AI in organisaties is onzichtbaar ingebouwd. In module 3 gaan we in op hoe je als professional invloed houdt &mdash; ook als jij de tool niet hebt gekozen.</div>
-        <div class="rfb" id="rf-c">Goede instelling. Niet meegaan met elke hype is verstandig. Maar weten wat AI is en kan, helpt je om bewust te kiezen &mdash; voor of tegen gebruik.</div>
-        <div class="rfb" id="rf-d">Uitstekend vertrekpunt. In module 2 en 3 ga je dieper in op hoe je AI-output beoordeelt en wanneer je het vertrouwt. Dat is precies het niveau waar jij naartoe werkt.</div>
-      </div>
-
-      <div class="card" id="l1c6">
-        <div class="dw">
-          <div class="dp">&#10003; Les 1 afgerond</div>
-          <div class="dt">Je begrijpt nu waarom AI-begrip ertoe doet</div>
-          <div class="ds">Niet als leuk weetje, maar als professionele basisvaardigheid voor iedereen die met AI-tools werkt.</div>
-        </div>
-        <div class="tks">
-          <div class="tkl">Wat je hebt geleerd</div>
-          <ul>
-            <li><span class="tkc">&#10003;</span> AI werkt anders dan traditionele software: het leert van patronen, volgt geen vaste regels</li>
-            <li><span class="tkc">&#10003;</span> Daardoor kan AI zelfverzekerd fout zijn &mdash; en dat vraagt alertheid van jou als gebruiker</li>
-            <li><span class="tkc">&#10003;</span> AI-tools zitten al in veel systemen die je dagelijks gebruikt, zichtbaar en onzichtbaar</li>
-            <li><span class="tkc">&#10003;</span> AI-geletterdheid begint bij drie vragen: klopt dit? Is dit veilig? Wie is verantwoordelijk?</li>
-          </ul>
-        </div>
-        <div class="nc"><div class="ni">&#8594;</div><div><div class="nb">Volgende les</div><div class="nt">Wat verstaan we onder AI? &mdash; definities, vormen en toepassingen</div></div></div>
-      </div>
+  <div class="main">
+    <div class="top-bar">
+      <div class="lesson-pill" id="lesson-pill">Module 01 &nbsp;&middot;&nbsp; Les 2/6 &nbsp;&middot;&nbsp; Card 1 van 6</div>
     </div>
 
-    <!-- LES 2 -->
-    <div class="section" id="sec-les2">
-      <div class="card active" id="l2c1">
+    <div class="card-zone">
+
+      <!-- Card 1: Wat is AI? -->
+      <div class="card active" id="card-1">
         <h1>Wat verstaan we onder AI?</h1>
         <p>Kunstmatige intelligentie &mdash; of AI, van het Engelse <em>Artificial Intelligence</em> &mdash; klinkt misschien als iets uit een sciencefictionfilm. Maar de kern is eigenlijk heel menselijk: we willen systemen bouwen die taken kunnen uitvoeren waarvoor normaal menselijk denken nodig is.</p>
-        <div class="bq"><p>AI is geen magie en geen bedreiging. Het is een gereedschap &mdash; ontworpen door mensen, voor mensen, om werk te verlichten, informatie toegankelijker te maken en beslissingen te ondersteunen.</p></div>
+        <div class="bq">
+          <p>AI is geen magie en geen bedreiging. Het is een gereedschap &mdash; ontworpen door mensen, voor mensen, om werk te verlichten, informatie toegankelijker te maken en beslissingen te ondersteunen.</p>
+        </div>
         <p>Denk aan wat mensen altijd al hebben gedaan: gereedschap maken om werk slimmer te doen. De boekdrukpers versterkte het vermogen om kennis te verspreiden. De rekenmachine verlichtte het rekenwerk. AI versterkt ons vermogen om te <span class="hw">leren van informatie</span>, <span class="hw">patronen te herkennen</span> en <span class="hw">taal te begrijpen</span>.</p>
+        <p>Het verschil met eerdere gereedschappen? AI kan dingen die we niet vooraf volledig hoeven te programmeren. Het leert. Dat maakt het krachtiger &mdash; en vraagt ook meer begrip van ons als gebruikers.</p>
         <div class="infobox">
-          <div class="ibl">Definitie</div>
+          <div class="infobox-label">Definitie</div>
           <p style="font-size:14.5px;margin:0;line-height:1.8;">AI is het vermogen van een computersysteem om taken uit te voeren die normaal menselijke intelligentie vereisen &mdash; zoals leren, redeneren, begrijpen van taal, herkennen van patronen en het nemen van beslissingen.</p>
         </div>
       </div>
 
-      <div class="card" id="l2c2">
+      <!-- Card 2: Geschiedenis -->
+      <div class="card" id="card-2">
         <h1>Van een simpele vraag tot alledaagse technologie</h1>
         <p>AI bestaat al veel langer dan de meeste mensen denken. Het begon met een provocerende vraag van een Britse wiskundige &mdash; en groeide in zeventig jaar uit tot de technologie die vandaag in onze telefoons, systemen en werkprocessen zit.</p>
-        <div class="tl">
-          <div class="tli"><div class="tll"><div class="tld"></div><div class="tlln"></div></div><div><div class="tly">1950</div><div class="tlt">Alan Turing stelt de vraag</div><div class="tlx">De Britse wiskundige Alan Turing publiceert zijn beroemde artikel en stelt de vraag: <em>&ldquo;Can machines think?&rdquo;</em> Hij beschrijft een test waarbij een mens niet kan onderscheiden of hij met een machine of een mens praat. De Turing-test is geboren &mdash; en met haar de droom van kunstmatige intelligentie.</div></div></div>
-          <div class="tli"><div class="tll"><div class="tld"></div><div class="tlln"></div></div><div><div class="tly">1956</div><div class="tlt">De term &ldquo;Artificial Intelligence&rdquo; ontstaat</div><div class="tlx">Op een conferentie in Dartmouth benoemen wetenschappers voor het eerst het vakgebied <em>artificial intelligence</em>. De ambitie: machines bouwen die kunnen leren, redeneren en problemen oplossen zoals mensen dat doen.</div></div></div>
-          <div class="tli"><div class="tll"><div class="tld"></div><div class="tlln"></div></div><div><div class="tly">1980&ndash;2000</div><div class="tlt">Leren van data wordt mogelijk</div><div class="tlx">Computers worden krachtiger en er ontstaat een nieuwe benadering: in plaats van regels programmeren, laat je systemen leren van grote hoeveelheden voorbeelden. Machine learning doet zijn intrede. Spamfilters, zoekmachines en aanbevelingssystemen zijn de eerste grote toepassingen.</div></div></div>
-          <div class="tli"><div class="tll"><div class="tld"></div><div class="tlln"></div></div><div><div class="tly">2022&ndash;nu</div><div class="tlt">AI wordt toegankelijk voor iedereen</div><div class="tlx">Met de komst van ChatGPT en vergelijkbare tools wordt AI voor het eerst breed toegankelijk. Je hoeft geen programmeur te zijn om er mee te werken. AI schrijft teksten, beantwoordt vragen, maakt afbeeldingen &mdash; en belandt in het hart van organisaties wereldwijd, ook in de publieke sector.</div></div></div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+            <div>
+              <div class="tl-year">1950</div>
+              <div class="tl-title">Alan Turing stelt de vraag</div>
+              <div class="tl-text">De Britse wiskundige Alan Turing publiceert zijn beroemde artikel <em>&ldquo;Computing Machinery and Intelligence&rdquo;</em> en stelt de vraag: <em>&ldquo;Can machines think?&rdquo;</em> Hij beschrijft een test waarbij een mens niet kan onderscheiden of hij met een machine of een mens praat. De Turing-test is geboren &mdash; en met haar de droom van kunstmatige intelligentie.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+            <div>
+              <div class="tl-year">1956</div>
+              <div class="tl-title">De term &ldquo;Artificial Intelligence&rdquo; ontstaat</div>
+              <div class="tl-text">Op een conferentie in Dartmouth (VS) benoemen wetenschappers voor het eerst het vakgebied <em>artificial intelligence</em>. De ambitie is groot: machines bouwen die kunnen leren, redeneren en problemen oplossen zoals mensen dat doen.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+            <div>
+              <div class="tl-year">1980&ndash;2000</div>
+              <div class="tl-title">Leren van data wordt mogelijk</div>
+              <div class="tl-text">Computers worden krachtiger en er ontstaat een nieuwe benadering: in plaats van regels programmeren, laat je systemen leren van grote hoeveelheden voorbeelden. <em>Machine learning</em> doet zijn intrede. Spamfilters, zoekmachines en aanbevelingssystemen zijn de eerste grote toepassingen.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-left"><div class="tl-dot"></div><div class="tl-line"></div></div>
+            <div>
+              <div class="tl-year">2022&ndash;nu</div>
+              <div class="tl-title">AI wordt toegankelijk voor iedereen</div>
+              <div class="tl-text">Met de komst van ChatGPT en vergelijkbare tools wordt AI voor het eerst breed toegankelijk. Je hoeft geen programmeur te zijn om er mee te werken. AI schrijft teksten, beantwoordt vragen, maakt afbeeldingen &mdash; en belandt in het hart van organisaties wereldwijd, ook in de publieke sector.</div>
+            </div>
+          </div>
         </div>
-        <p style="font-size:13.5px;color:var(--tf);">Turing&rsquo;s droom was eenvoudig: een externe intelligentie die in dienst staat van de mens. Die droom is nu, zeventig jaar later, werkelijkheid geworden.</p>
+        <p style="font-size:13.5px;color:var(--text-faint);">Turing&rsquo;s droom was eenvoudig: een externe intelligentie die in dienst staat van de mens. Die droom is nu, zeventig jaar later, werkelijkheid geworden.</p>
       </div>
 
-      <div class="card" id="l2c3">
+      <!-- Card 3: Vormen van AI -->
+      <div class="card" id="card-3">
         <h1>Drie vormen van AI die je moet kennen</h1>
         <p>Niet alle AI is hetzelfde. Er zijn globaal drie vormen die je in de praktijk tegenkomt &mdash; elk met eigen mogelijkheden en beperkingen.</p>
-        <div class="fg">
-          <div class="fc" style="border-top:3px solid #8B9E7A;">
-            <div class="fc-icon">&#127919;</div>
-            <div class="fc-tag" style="background:#EEF4E8;color:#4A6A30;">Smal &amp; gefocust</div>
-            <div class="fc-title">Smalle AI</div>
-            <div class="fc-desc">Doet &eacute;&eacute;n specifieke taak heel goed. Kan niets buiten die taak. De meeste AI die je dagelijks tegenkomt is smal.</div>
-            <div class="fc-ex">Bijv: spamfilter, gezichtsherkenning, vertaaltool, risicoscore</div>
+        <div class="forms-grid">
+          <div class="form-card" style="border-top:3px solid #8B9E7A;">
+            <div class="form-icon">&#127919;</div>
+            <div class="form-tag" style="background:#EEF4E8;color:#4A6A30;">Smal &amp; gefocust</div>
+            <div class="form-title">Smalle AI</div>
+            <div class="form-desc">Doet &eacute;&eacute;n specifieke taak heel goed. Kan niets buiten die taak. De meeste AI die je dagelijks tegenkomt is smal.</div>
+            <div class="form-example">Bijv: spamfilter, gezichtsherkenning, vertaaltool, risicoscore</div>
           </div>
-          <div class="fc" style="border-top:3px solid var(--ac);">
-            <div class="fc-icon">&#9999;&#65039;</div>
-            <div class="fc-tag" style="background:var(--hb);color:var(--ht);">Creatief &amp; generatief</div>
-            <div class="fc-title">Generatieve AI</div>
-            <div class="fc-desc">Maakt nieuwe content op basis van een opdracht: tekst, samenvattingen, afbeeldingen, code.</div>
-            <div class="fc-ex">Bijv: ChatGPT, Copilot, Claude, Gemini</div>
+          <div class="form-card" style="border-top:3px solid #8B6F4E;">
+            <div class="form-icon">&#9999;&#65039;</div>
+            <div class="form-tag" style="background:var(--highlight-bg);color:var(--highlight-txt);">Creatief &amp; generatief</div>
+            <div class="form-title">Generatieve AI</div>
+            <div class="form-desc">Maakt nieuwe content op basis van een opdracht: tekst, samenvattingen, afbeeldingen, code. Leert van enorme hoeveelheden bestaande informatie.</div>
+            <div class="form-example">Bijv: ChatGPT, Copilot, Claude, Gemini</div>
           </div>
-          <div class="fc" style="border-top:3px solid #7A8BA8;">
-            <div class="fc-icon">&#129302;</div>
-            <div class="fc-tag" style="background:#EEF1F7;color:#3A4F6A;">Zelfstandig &amp; handelend</div>
-            <div class="fc-title">Agentische AI</div>
-            <div class="fc-desc">Voert meerdere stappen zelfstandig uit, maakt beslissingen onderweg en kan andere systemen aansturen.</div>
-            <div class="fc-ex">Bijv: AI-assistent die zelf afspraken plant, dossiers doorzoekt en rapporten opstelt</div>
+          <div class="form-card" style="border-top:3px solid #7A8BA8;">
+            <div class="form-icon">&#129302;</div>
+            <div class="form-tag" style="background:#EEF1F7;color:#3A4F6A;">Zelfstandig &amp; handelend</div>
+            <div class="form-title">Agentische AI</div>
+            <div class="form-desc">Voert meerdere stappen zelfstandig uit, maakt beslissingen onderweg en kan andere systemen aansturen. Sterk in opkomst.</div>
+            <div class="form-example">Bijv: AI-assistent die zelf afspraken plant, dossiers doorzoekt en rapporten opstelt</div>
           </div>
         </div>
-        <div class="bq"><p>Voor de meeste medewerkers in de publieke sector geldt: je werkt met smalle AI en generatieve AI. Agentische AI is in opkomst &mdash; en je zult het steeds vaker tegenkomen.</p></div>
+        <div class="bq">
+          <p>Voor de meeste medewerkers in de publieke sector geldt: je werkt met smalle AI (systemen die iets specifieks doen) en generatieve AI (tools als ChatGPT of Copilot). Agentische AI is in opkomst &mdash; en je zult het steeds vaker tegenkomen.</p>
+        </div>
       </div>
 
-      <div class="card" id="l2c4">
+      <!-- Card 4: Onzichtbare systemen -->
+      <div class="card" id="card-4">
         <h1>AI om je heen: de systemen die al voor je werken</h1>
         <p>AI is geen nieuwe ontwikkeling die er nog aankomt. Het is er al. En het werkt al dagelijks voor je &mdash; ook buiten je werk. Veel van die systemen zijn zo vertrouwd geworden dat we ze niet meer als &ldquo;intelligent&rdquo; ervaren.</p>
-        <div class="sg">
-          <div class="sc"><div class="si">&#127902;</div><div><div class="sn">Netflix &amp; Spotify</div><div class="sd">Aanbevelingssystemen analyseren jouw gedrag en suggereren wat je als volgende wilt zien of horen.</div></div></div>
-          <div class="sc"><div class="si">&#128650;</div><div><div class="sn">Google Maps &amp; navigatie</div><div class="sd">Berekent real-time de snelste route op basis van verkeersdrukte en patronen van miljoenen gebruikers.</div></div></div>
-          <div class="sc"><div class="si">&#128648;</div><div><div class="sn">OV-chipkaart &amp; reisplanning</div><div class="sd">AI optimaliseert dienstregeling, voorspelt drukte en detecteert onregelmatigheden in reispatronen.</div></div></div>
-          <div class="sc"><div class="si">&#128179;</div><div><div class="sn">Bankieren &amp; fraude</div><div class="sd">Elke betaling wordt in milliseconden gecontroleerd door AI die afwijkend gedrag herkent en blokkeert.</div></div></div>
-          <div class="sc"><div class="si">&#128140;</div><div><div class="sn">E-mail &amp; spam</div><div class="sd">Je spamfilter leert continu van nieuwe patronen. Ook je e-mailprogramma dat zinnen afmaakt werkt met AI.</div></div></div>
-          <div class="sc"><div class="si">&#128269;</div><div><div class="sn">Zoekmachines</div><div class="sd">Google geeft steeds vaker samengevatte antwoorden &mdash; gegenereerd door AI op basis van duizenden bronnen.</div></div></div>
+        <div class="sys-grid">
+          <div class="sys-card">
+            <div class="sys-icon">&#127902;&#65039;</div>
+            <div>
+              <div class="sys-name">Netflix &amp; Spotify</div>
+              <div class="sys-desc">Aanbevelingssystemen analyseren jouw kijkgedrag en suggereren wat je als volgende wilt zien of horen &mdash; zonder dat je ernaar vraagt.</div>
+            </div>
+          </div>
+          <div class="sys-card">
+            <div class="sys-icon">&#128650;</div>
+            <div>
+              <div class="sys-name">Google Maps &amp; navigatie</div>
+              <div class="sys-desc">Berekent real-time de snelste route op basis van verkeersdrukte, wegwerkzaamheden en historische patronen van miljoenen gebruikers.</div>
+            </div>
+          </div>
+          <div class="sys-card">
+            <div class="sys-icon">&#128648;</div>
+            <div>
+              <div class="sys-name">OV-chipkaart &amp; reisplanning</div>
+              <div class="sys-desc">AI optimaliseert dienstregeling, voorspelt drukte en detecteert onregelmatigheden in reispatronen die kunnen wijzen op fraude of storingen.</div>
+            </div>
+          </div>
+          <div class="sys-card">
+            <div class="sys-icon">&#128179;</div>
+            <div>
+              <div class="sys-name">Bankieren &amp; fraude</div>
+              <div class="sys-desc">Elke betaling wordt in milliseconden gecontroleerd door AI die afwijkend gedrag herkent &mdash; en verdachte transacties blokkeert v&oacute;&oacute;r ze plaatsvinden.</div>
+            </div>
+          </div>
+          <div class="sys-card">
+            <div class="sys-icon">&#128140;</div>
+            <div>
+              <div class="sys-name">E-mail &amp; spam</div>
+              <div class="sys-desc">Je spamfilter leert continu van nieuwe patronen. Maar ook je e-mailprogramma die zinnen voor je afmaakt, werkt met generatieve AI.</div>
+            </div>
+          </div>
+          <div class="sys-card">
+            <div class="sys-icon">&#128269;</div>
+            <div>
+              <div class="sys-name">Zoekmachines</div>
+              <div class="sys-desc">Google geeft steeds vaker samengevatte antwoorden in plaats van losse links &mdash; gegenereerd door AI op basis van duizenden bronnen tegelijk.</div>
+            </div>
+          </div>
         </div>
-        <p style="font-size:13.5px;color:var(--tf);margin-top:.5rem;">Al deze systemen zijn gebouwd om mensen te helpen. Ze nemen routinewerk over, filteren informatie en maken keuzes sneller. Dat is ook wat AI in jouw werk kan doen.</p>
+        <p style="font-size:13.5px;color:var(--text-faint);margin-top:0.5rem;">Al deze systemen hebben &eacute;&eacute;n ding gemeen: ze zijn gebouwd om mensen te helpen. Ze nemen routinewerk over, filteren informatie en maken keuzes sneller. Dat is ook wat AI in jouw werk kan doen.</p>
       </div>
 
-      <div class="card" id="l2c5">
+      <!-- Card 5: Publieke sector -->
+      <div class="card" id="card-5">
         <h1>AI in de publieke sector: wat zie jij al?</h1>
-        <p>Ook in overheid, zorg en uitvoering is AI al aanwezig &mdash; soms zichtbaar, soms verborgen in systemen die al jaren draaien.</p>
-        <ul class="al">
-          <li><div class="ei">&#128172;</div><div><strong>Digitale assistenten voor burgers</strong><br>Chatbots beantwoorden veelgestelde vragen over uitkeringen, vergunningen of gemeentediensten &mdash; 24 uur per dag, in begrijpelijke taal.</div></li>
-          <li><div class="ei">&#128196;</div><div><strong>Samenvatten en verwerken van documenten</strong><br>AI leest dossiers, brieven en rapporten en maakt samenvattingen. Medewerkers hoeven minder te lezen om snel de kern te begrijpen.</div></li>
-          <li><div class="ei">&#128202;</div><div><strong>Signalering en risicoscores</strong><br>Systemen analyseren data en signaleren situaties die aandacht verdienen: schuldenproblematiek, zorgmijding, overlast.</div></li>
-          <li><div class="ei">&#128663;</div><div><strong>Slim verkeers- en ruimtebeheer</strong><br>Gemeenten gebruiken AI om verkeerslichten te optimaliseren, parkeerdruk te voorspellen en openbare ruimte te beheren.</div></li>
-          <li><div class="ei">&#129657;</div><div><strong>Ondersteuning bij complexe casussen</strong><br>AI-tools helpen professionals om wetgeving, regelingen en precedenten snel te raadplegen &mdash; zodat zij meer tijd hebben voor de mens v&oacute;&oacute;r hen.</div></li>
+        <p>Ook in overheid, zorg en uitvoering is AI al aanwezig &mdash; soms zichtbaar, soms verborgen in systemen die al jaren draaien. De mogelijkheden groeien snel, en dat biedt echte kansen voor professionals die hiermee willen werken.</p>
+        <ul class="app-list">
+          <li>
+            <div class="app-icon">&#128172;</div>
+            <div><strong>Digitale assistenten voor burgers</strong><br>Chatbots beantwoorden veelgestelde vragen over uitkeringen, vergunningen of gemeentediensten &mdash; 24 uur per dag, in begrijpelijke taal.</div>
+          </li>
+          <li>
+            <div class="app-icon">&#128196;</div>
+            <div><strong>Samenvatten en verwerken van documenten</strong><br>AI leest dossiers, brieven en rapporten en maakt samenvattingen. Medewerkers hoeven minder te lezen om snel de kern te begrijpen.</div>
+          </li>
+          <li>
+            <div class="app-icon">&#128202;</div>
+            <div><strong>Signalering en risicoscores</strong><br>Systemen analyseren data en signaleren situaties die aandacht verdienen: schuldenproblematiek, zorgmijding, overlast. AI helpt prioriteiten stellen.</div>
+          </li>
+          <li>
+            <div class="app-icon">&#128663;</div>
+            <div><strong>Slim verkeers- en ruimtebeheer</strong><br>Gemeenten gebruiken AI om verkeerslichten te optimaliseren, parkeerdruk te voorspellen en openbare ruimte effici&euml;nter te beheren.</div>
+          </li>
+          <li>
+            <div class="app-icon">&#129657;</div>
+            <div><strong>Ondersteuning bij complexe casussen</strong><br>AI-tools helpen professionals in het sociaal domein om wetgeving, regelingen en precedenten snel te raadplegen &mdash; zodat zij meer tijd hebben voor de mens v&oacute;&oacute;r hen.</div>
+          </li>
         </ul>
-        <div class="bq"><p>AI neemt geen beslissingen over burgers &mdash; professionals doen dat. Maar AI kan professionals helpen om die beslissingen beter, sneller en eerlijker te nemen.</p></div>
+        <div class="bq">
+          <p>AI neemt geen beslissingen over burgers &mdash; professionals doen dat. Maar AI kan professionals helpen om die beslissingen beter, sneller en eerlijker te nemen.</p>
+        </div>
       </div>
 
-      <div class="card" id="l2c6">
-        <div class="dw">
-          <div class="dp">&#10003; Les 2 afgerond</div>
-          <div class="dt">Je weet nu wat AI is, waar het vandaan komt en hoe het om je heen werkt</div>
-          <div class="ds">Van Turings vraag in 1950 tot de tools die vandaag in jouw organisatie draaien.</div>
+      <!-- Card 6: Afsluiting -->
+      <div class="card" id="card-6">
+        <div class="done-wrap">
+          <div class="done-pill">&#10003; Les 2 afgerond</div>
+          <div class="done-title">Je weet nu wat AI is, waar het vandaan komt en hoe het om je heen werkt</div>
+          <div class="done-sub">Van Turings vraag in 1950 tot de tools die vandaag in jouw organisatie draaien &mdash; AI is een menselijke uitvinding, in dienst van mensen.</div>
         </div>
-        <div class="tks">
-          <div class="tkl">Wat je hebt geleerd</div>
+        <div class="takeaways">
+          <div class="tk-label">Wat je hebt geleerd</div>
           <ul>
-            <li><span class="tkc">&#10003;</span> AI is een gereedschap dat menselijk denkvermogen versterkt &mdash; geen magie, geen bedreiging</li>
-            <li><span class="tkc">&#10003;</span> Alan Turing stelde in 1950 de vraag die alles in gang zette: kan een machine denken?</li>
-            <li><span class="tkc">&#10003;</span> Er zijn drie vormen: smalle AI, generatieve AI en agentische AI</li>
-            <li><span class="tkc">&#10003;</span> AI zit al in Netflix, navigatie, bankieren en de OV &mdash; vertrouwde systemen die al voor je werken</li>
-            <li><span class="tkc">&#10003;</span> In de publieke sector helpt AI bij communicatie, documentverwerking, signalering en casusondersteuning</li>
+            <li><span class="tk-check">&#10003;</span> AI is een gereedschap dat menselijk denkvermogen versterkt &mdash; geen magie, geen bedreiging</li>
+            <li><span class="tk-check">&#10003;</span> Alan Turing stelde in 1950 de vraag die alles in gang zette: kan een machine denken?</li>
+            <li><span class="tk-check">&#10003;</span> Er zijn drie vormen: smalle AI, generatieve AI en agentische AI &mdash; elk met eigen toepassingen</li>
+            <li><span class="tk-check">&#10003;</span> AI zit al in Netflix, navigatie, bankieren en de OV &mdash; vertrouwde systemen die al voor je werken</li>
+            <li><span class="tk-check">&#10003;</span> In de publieke sector helpt AI bij communicatie, documentverwerking, signalering en casusondersteuning</li>
           </ul>
         </div>
-        <div class="nc"><div class="ni">&#9889;</div><div><div class="nb">Volgende stap</div><div class="nt">Oefening: AI of geen AI? &mdash; test je kennis met echte voorbeelden</div></div></div>
+        <div class="next-card">
+          <div class="next-icon">&#8594;</div>
+          <div>
+            <div class="next-badge">Volgende les</div>
+            <div class="next-title-text">Traditionele software vs. AI &mdash; wat maakt het verschil en waarom doet dat ertoe?</div>
+          </div>
+        </div>
       </div>
+
     </div>
 
-    <!-- OEFENING -->
-    <div class="section" id="sec-oefening">
-      <div class="card active" id="oefc1">
-        <div class="game-item">
-          <h1>AI of geen AI?</h1>
-          <p style="color:var(--tf);font-size:14px;">Lees elk voorbeeld en beslis: maakt dit systeem gebruik van AI of niet? Je krijgt direct feedback.</p>
-          <div class="game-scenario"><strong>Voorbeeld 1 van 6</strong><br><br>&#128231; Een e-mailprogramma dat automatisch leert welke e-mails ongewenst zijn en ze naar de spammap verplaatst &mdash; ook als het spam-patroon elke week verandert.</div>
-          <div class="game-btns">
-            <button class="game-btn ai-btn" onclick="answerOef(1,true,this)">&#9989; AI</button>
-            <button class="game-btn noai-btn" onclick="answerOef(1,false,this)">&#10060; Geen AI</button>
-          </div>
-          <div class="game-reveal" id="oef-reveal-1"></div>
-        </div>
+    <div class="nav-bar">
+      <button class="nav-btn" id="btn-prev" onclick="go(-1)" disabled>&larr; Vorige</button>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
+        <div class="dots-row" id="dots"></div>
+        <div class="step-txt" id="step-txt">1 van 6</div>
       </div>
-      <div class="card" id="oefc2">
-        <div class="game-item">
-          <h1>AI of geen AI?</h1>
-          <p style="color:var(--tf);font-size:14px;">Lees elk voorbeeld en beslis: maakt dit systeem gebruik van AI of niet?</p>
-          <div class="game-scenario"><strong>Voorbeeld 2 van 6</strong><br><br>&#128290; Een rekenmachine-app op je telefoon die de berekening 847 &times; 23 uitrekent en het resultaat toont.</div>
-          <div class="game-btns">
-            <button class="game-btn ai-btn" onclick="answerOef(2,true,this)">&#9989; AI</button>
-            <button class="game-btn noai-btn" onclick="answerOef(2,false,this)">&#10060; Geen AI</button>
-          </div>
-          <div class="game-reveal" id="oef-reveal-2"></div>
-        </div>
-      </div>
-      <div class="card" id="oefc3">
-        <div class="game-item">
-          <h1>AI of geen AI?</h1>
-          <p style="color:var(--tf);font-size:14px;">Lees elk voorbeeld en beslis: maakt dit systeem gebruik van AI of niet?</p>
-          <div class="game-scenario"><strong>Voorbeeld 3 van 6</strong><br><br>&#127916; Netflix stelt elke week een andere lijst series voor, afgestemd op wat jij al hebt gekeken, wanneer je kijkt en hoe lang je per aflevering blijft kijken.</div>
-          <div class="game-btns">
-            <button class="game-btn ai-btn" onclick="answerOef(3,true,this)">&#9989; AI</button>
-            <button class="game-btn noai-btn" onclick="answerOef(3,false,this)">&#10060; Geen AI</button>
-          </div>
-          <div class="game-reveal" id="oef-reveal-3"></div>
-        </div>
-      </div>
-      <div class="card" id="oefc4">
-        <div class="game-item">
-          <h1>AI of geen AI?</h1>
-          <p style="color:var(--tf);font-size:14px;">Lees elk voorbeeld en beslis: maakt dit systeem gebruik van AI of niet?</p>
-          <div class="game-scenario"><strong>Voorbeeld 4 van 6</strong><br><br>&#128682; Een automatische schuifdeur bij een supermarkt die opengaat zodra een sensor beweging detecteert voor de deur.</div>
-          <div class="game-btns">
-            <button class="game-btn ai-btn" onclick="answerOef(4,true,this)">&#9989; AI</button>
-            <button class="game-btn noai-btn" onclick="answerOef(4,false,this)">&#10060; Geen AI</button>
-          </div>
-          <div class="game-reveal" id="oef-reveal-4"></div>
-        </div>
-      </div>
-      <div class="card" id="oefc5">
-        <div class="game-item">
-          <h1>AI of geen AI?</h1>
-          <p style="color:var(--tf);font-size:14px;">Lees elk voorbeeld en beslis: maakt dit systeem gebruik van AI of niet?</p>
-          <div class="game-scenario"><strong>Voorbeeld 5 van 6</strong><br><br>&#128241; Gezichtsherkenning op je smartphone die jouw gezicht herkent &mdash; ook als je een bril draagt, je haar anders hebt of in het donker staat.</div>
-          <div class="game-btns">
-            <button class="game-btn ai-btn" onclick="answerOef(5,true,this)">&#9989; AI</button>
-            <button class="game-btn noai-btn" onclick="answerOef(5,false,this)">&#10060; Geen AI</button>
-          </div>
-          <div class="game-reveal" id="oef-reveal-5"></div>
-        </div>
-      </div>
-      <div class="card" id="oefc6">
-        <div class="game-item">
-          <h1>AI of geen AI?</h1>
-          <p style="color:var(--tf);font-size:14px;">Lees elk voorbeeld en beslis: maakt dit systeem gebruik van AI of niet?</p>
-          <div class="game-scenario"><strong>Voorbeeld 6 van 6</strong><br><br>&#128196; Een digitaal pdf-formulier voor een vergunningsaanvraag dat je invult en via e-mail verstuurt naar de gemeente.</div>
-          <div class="game-btns">
-            <button class="game-btn ai-btn" onclick="answerOef(6,true,this)">&#9989; AI</button>
-            <button class="game-btn noai-btn" onclick="answerOef(6,false,this)">&#10060; Geen AI</button>
-          </div>
-          <div class="game-reveal" id="oef-reveal-6"></div>
-        </div>
-      </div>
-      <div class="card" id="oefc7">
-        <div class="dw">
-          <div class="result-circle"><div class="result-num" id="oef-score-num">0</div><div class="result-tot">van 6</div></div>
-          <div class="dt" id="oef-score-title">Resultaat oefening</div>
-          <div class="ds" id="oef-score-sub">Je hebt de oefening afgerond.</div>
-        </div>
-        <div class="tks">
-          <div class="tkl">Antwoorden</div>
-          <ul>
-            <li><span class="tkc">&#9989;</span> Spamfilter &mdash; AI (leert van patronen)</li>
-            <li><span class="tkc">&#10060;</span> Rekenmachine &mdash; Geen AI (vaste regels, geen leerproces)</li>
-            <li><span class="tkc">&#9989;</span> Netflix-aanbevelingen &mdash; AI (leert van jouw gedrag)</li>
-            <li><span class="tkc">&#10060;</span> Schuifdeur &mdash; Geen AI (sensor met vaste reactie, geen leerproces)</li>
-            <li><span class="tkc">&#9989;</span> Gezichtsherkenning &mdash; AI (herkent variaties, getraind op data)</li>
-            <li><span class="tkc">&#10060;</span> PDF-formulier &mdash; Geen AI (statisch document, geen intelligentie)</li>
-          </ul>
-        </div>
-        <div class="nc"><div class="ni">?</div><div><div class="nb">Volgende stap</div><div class="nt">Quiz: 5 kennischeck-vragen om je kennis te toetsen</div></div></div>
-      </div>
+      <button class="nav-btn pri" id="btn-next" onclick="go(1)">Volgende &rarr;</button>
     </div>
-
-    <!-- QUIZ -->
-    <div class="section" id="sec-quiz">
-      <div class="card active" id="qc1">
-        <div class="quiz-num">Vraag 1 van 5</div>
-        <div class="quiz-q">Wat was de kernvraag die Alan Turing in 1950 stelde?</div>
-        <div class="ropts" id="qopts-1">
-          <div class="ropt" onclick="answerQuiz(1,this,false)"><div class="rc"></div><span>Hoe snel kan een computer rekenen?</span></div>
-          <div class="ropt" onclick="answerQuiz(1,this,true)"><div class="rc"></div><span>Kan een machine denken?</span></div>
-          <div class="ropt" onclick="answerQuiz(1,this,false)"><div class="rc"></div><span>Hoe bouw je een computer?</span></div>
-          <div class="ropt" onclick="answerQuiz(1,this,false)"><div class="rc"></div><span>Wat is het verschil tussen hardware en software?</span></div>
-        </div>
-        <div class="quiz-fb" id="qfb-1"></div>
-      </div>
-      <div class="card" id="qc2">
-        <div class="quiz-num">Vraag 2 van 5</div>
-        <div class="quiz-q">Welke vorm van AI maakt nieuwe content op basis van een opdracht?</div>
-        <div class="ropts" id="qopts-2">
-          <div class="ropt" onclick="answerQuiz(2,this,false)"><div class="rc"></div><span>Smalle AI</span></div>
-          <div class="ropt" onclick="answerQuiz(2,this,false)"><div class="rc"></div><span>Agentische AI</span></div>
-          <div class="ropt" onclick="answerQuiz(2,this,true)"><div class="rc"></div><span>Generatieve AI</span></div>
-          <div class="ropt" onclick="answerQuiz(2,this,false)"><div class="rc"></div><span>Traditionele software</span></div>
-        </div>
-        <div class="quiz-fb" id="qfb-2"></div>
-      </div>
-      <div class="card" id="qc3">
-        <div class="quiz-num">Vraag 3 van 5</div>
-        <div class="quiz-q">Welk systeem is een voorbeeld van AI in het dagelijks leven?</div>
-        <div class="ropts" id="qopts-3">
-          <div class="ropt" onclick="answerQuiz(3,this,false)"><div class="rc"></div><span>Een digitale wekker</span></div>
-          <div class="ropt" onclick="answerQuiz(3,this,false)"><div class="rc"></div><span>Een rekenmachine</span></div>
-          <div class="ropt" onclick="answerQuiz(3,this,true)"><div class="rc"></div><span>Google Maps dat real-time routes berekent op basis van drukte</span></div>
-          <div class="ropt" onclick="answerQuiz(3,this,false)"><div class="rc"></div><span>Een pdf-formulier voor een vergunningsaanvraag</span></div>
-        </div>
-        <div class="quiz-fb" id="qfb-3"></div>
-      </div>
-      <div class="card" id="qc4">
-        <div class="quiz-num">Vraag 4 van 5</div>
-        <div class="quiz-q">Wat is de beste omschrijving van de rol van AI voor professionals in de publieke sector?</div>
-        <div class="ropts" id="qopts-4">
-          <div class="ropt" onclick="answerQuiz(4,this,false)"><div class="rc"></div><span>AI neemt beslissingen over burgers zodat medewerkers meer tijd hebben</span></div>
-          <div class="ropt" onclick="answerQuiz(4,this,true)"><div class="rc"></div><span>AI ondersteunt medewerkers zodat zij betere beslissingen kunnen nemen</span></div>
-          <div class="ropt" onclick="answerQuiz(4,this,false)"><div class="rc"></div><span>AI vervangt burgercontact volledig via chatbots</span></div>
-          <div class="ropt" onclick="answerQuiz(4,this,false)"><div class="rc"></div><span>AI schrijft regelgeving en beleidsadviezen zelfstandig</span></div>
-        </div>
-        <div class="quiz-fb" id="qfb-4"></div>
-      </div>
-      <div class="card" id="qc5">
-        <div class="quiz-num">Vraag 5 van 5</div>
-        <div class="quiz-q">Wat onderscheidt AI het meest van traditionele software?</div>
-        <div class="ropts" id="qopts-5">
-          <div class="ropt" onclick="answerQuiz(5,this,false)"><div class="rc"></div><span>AI is altijd sneller dan traditionele software</span></div>
-          <div class="ropt" onclick="answerQuiz(5,this,false)"><div class="rc"></div><span>AI werkt alleen online en heeft internet nodig</span></div>
-          <div class="ropt" onclick="answerQuiz(5,this,false)"><div class="rc"></div><span>AI is duurder om te bouwen en te onderhouden</span></div>
-          <div class="ropt" onclick="answerQuiz(5,this,true)"><div class="rc"></div><span>AI leert van voorbeelden in plaats van vaste regels te volgen</span></div>
-        </div>
-        <div class="quiz-fb" id="qfb-5"></div>
-      </div>
-      <div class="card" id="qc6">
-        <div class="dw">
-          <div class="result-circle"><div class="result-num" id="quiz-score-num">0</div><div class="result-tot">van 5</div></div>
-          <div class="dt" id="quiz-score-title">Quiz afgerond!</div>
-          <div class="ds" id="quiz-score-sub">Je hebt de kennischeck voltooid.</div>
-        </div>
-        <div class="tks">
-          <div class="tkl">Wat je hebt bewezen te weten</div>
-          <ul>
-            <li><span class="tkc">&#10003;</span> Alan Turing stelde in 1950 de vraag &ldquo;Kan een machine denken?&rdquo;</li>
-            <li><span class="tkc">&#10003;</span> Generatieve AI maakt nieuwe content op basis van opdrachten</li>
-            <li><span class="tkc">&#10003;</span> Google Maps is een voorbeeld van AI in het dagelijks leven</li>
-            <li><span class="tkc">&#10003;</span> AI ondersteunt professionals &mdash; het neemt hun verantwoordelijkheid niet over</li>
-            <li><span class="tkc">&#10003;</span> AI leert van voorbeelden in plaats van vaste regels te volgen</li>
-          </ul>
-        </div>
-        <div class="nc"><div class="ni">&#9733;</div><div><div class="nb">Laatste stap</div><div class="nt">Module 01 afronden en je voortgang opslaan</div></div></div>
-      </div>
-    </div>
-
-    <!-- AFRONDING -->
-    <div class="section" id="sec-afronding">
-      <div class="card active" id="afc1">
-        <div class="dw" style="padding:2rem 0;">
-          <div class="dp">&#127881; Module 01 afgerond</div>
-          <div class="dt" style="font-size:26px;">Gefeliciteerd!</div>
-          <div class="ds">Je hebt de eerste module van de AI-geletterdheidsreeks voltooid. Je hebt twee lessen gevolgd, een oefening gedaan en een quiz behaald.</div>
-        </div>
-        <div class="tks">
-          <div class="tkl">Jij kunt nu</div>
-          <ul>
-            <li><span class="tkc">&#10003;</span> Uitleggen wat AI is en waarom AI-begrip belangrijk is als professional</li>
-            <li><span class="tkc">&#10003;</span> De drie vormen van AI benoemen: smal, generatief en agentisch</li>
-            <li><span class="tkc">&#10003;</span> AI-systemen herkennen in je dagelijkse omgeving</li>
-            <li><span class="tkc">&#10003;</span> De drie kritische vragen stellen bij elk AI-systeem dat je gebruikt</li>
-            <li><span class="tkc">&#10003;</span> De rol van AI in de publieke sector beschrijven vanuit een positief en realistisch perspectief</li>
-          </ul>
-        </div>
-        <div class="nc"><div class="ni">&#8594;</div><div><div class="nb">Volgende module</div><div class="nt">Module 02: Hoe werkt AI van binnen? &mdash; data, modellen en hoe AI leert</div></div></div>
-      </div>
-    </div>
-
   </div>
-
-  <div class="nav-bar">
-    <button class="nav-btn" id="btn-prev" onclick="go(-1)" disabled>&larr; Vorige</button>
-    <div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
-      <div class="dots-row" id="dots"></div>
-      <div class="step-txt" id="step-txt">1 van 6</div>
-    </div>
-    <button class="nav-btn pri" id="btn-next" onclick="go(1)">Volgende &rarr;</button>
-  </div>
-</div>
 
 </div>
 
 <script>
-var SECS = ["les1","les2","oefening","quiz","afronding"];
-var SCARDS = {les1:6,les2:6,oefening:7,quiz:6,afronding:1};
-var PREFIX = {les1:"l1c",les2:"l2c",oefening:"oefc",quiz:"qc",afronding:"afc"};
-var curSec = "les1", curCard = 1;
-var oefScore = 0, quizScore = 0;
-var oefAnswered = {}, quizAnswered = {};
+  var cur = 1, tot = 6;
 
-var OEF_DATA = {
-  1:{correct:true, fb:"Juist! Een spamfilter die continu bijleert is een klassiek voorbeeld van smalle AI. Het herkent patronen in spam en past zich aan als die patronen veranderen."},
-  2:{correct:false, fb:"Klopt! Een rekenmachine voert vaste berekeningen uit op basis van regels die een programmeur heeft opgeschreven. Er is geen leerproces &mdash; dat maakt het traditionele software."},
-  3:{correct:true, fb:"Juist! Netflix gebruikt machine learning om jouw gedrag te analyseren en aanbevelingen te personaliseren. Elke gebruiker ziet een andere lijst &mdash; dat is AI."},
-  4:{correct:false, fb:"Goed gezien! Een schuifdeur reageert op een bewegingssensor via een eenvoudige als-dan-regel: beweging gedetecteerd = deur open. Geen leerproces, dus geen AI."},
-  5:{correct:true, fb:"Correct! Gezichtsherkenning is getraind op miljoenen gezichten en herkent jou ook onder wisselende omstandigheden. Dat leervermogen maakt het AI."},
-  6:{correct:false, fb:"Precies! Een pdf-formulier is een statisch document. Het slaat je antwoorden op en verstuurt ze, maar denkt niet mee, leert niet en past zich niet aan. Geen AI."}
-};
-
-var QUIZ_FB = {
-  1:{c:"Correct! Turings vraag \"Can machines think?\" uit 1950 is het startpunt van het hele vakgebied AI.",w:"Niet helemaal. Turing stelde juist de fundamentele filosofische vraag: kan een machine denken? Zijn antwoord was de Turing-test."},
-  2:{c:"Goed! Generatieve AI maakt nieuwe content &mdash; teksten, afbeeldingen, code &mdash; op basis van een opdracht. Denk aan ChatGPT, Claude of Copilot.",w:"Niet correct. Generatieve AI is de vorm die nieuwe content aanmaakt. Smalle AI doet &eacute;&eacute;n taak goed; agentische AI handelt zelfstandig."},
-  3:{c:"Juist! Google Maps analyseert real-time verkeersdata van miljoenen gebruikers om routes aan te passen. Dat is een duidelijk voorbeeld van AI in je dagelijkse leven.",w:"Niet helemaal. Een digitale wekker en rekenmachine volgen vaste regels zonder te leren. Google Maps gebruikt AI om real-time routes te berekenen."},
-  4:{c:"Precies! AI ondersteunt &mdash; de verantwoordelijkheid blijft bij de professional. AI adviseert, analyseert en signaleert. Jij beslist.",w:"Niet correct. AI neemt geen beslissingen over burgers over. De professional blijft altijd verantwoordelijk. AI is een hulpmiddel, geen vervanger."},
-  5:{c:"Correct! Het fundamentele verschil: traditionele software volgt regels die een programmeur heeft opgeschreven. AI leert van voorbeelden en past zich aan.",w:"Niet helemaal. Het kernverschil is het leerproces: AI leert van data en voorbeelden in plaats van vaste regels te volgen."}
-};
-
-function cid(sec, card) { return PREFIX[sec] + card; }
-
-function jumpTo(sec, card) {
-  document.getElementById(cid(curSec, curCard)).classList.remove("active");
-  document.getElementById("sec-" + curSec).classList.remove("active");
-  curSec = sec; curCard = card;
-  document.getElementById("sec-" + curSec).classList.add("active");
-  document.getElementById(cid(curSec, curCard)).classList.add("active");
-  updateUI();
-  window.scrollTo(0, 0);
-}
-
-function go(dir) {
-  var total = SCARDS[curSec];
-  if (dir === 1) {
-    if (curCard < total) { jumpTo(curSec, curCard + 1); }
-    else {
-      var idx = SECS.indexOf(curSec);
-      if (idx < SECS.length - 1) jumpTo(SECS[idx + 1], 1);
-    }
-  } else {
-    if (curCard > 1) { jumpTo(curSec, curCard - 1); }
-    else {
-      var idx = SECS.indexOf(curSec);
-      if (idx > 0) { var ps = SECS[idx-1]; jumpTo(ps, SCARDS[ps]); }
+  function buildDots() {
+    var c = document.getElementById('dots');
+    c.innerHTML = '';
+    for (var i = 1; i <= tot; i++) {
+      var d = document.createElement('div');
+      d.className = 'dot' + (i === cur ? ' active' : i < cur ? ' done' : '');
+      (function(n){ d.onclick = function(){ goTo(n); }; })(i);
+      c.appendChild(d);
     }
   }
-}
 
-function updateUI() {
-  var total = SCARDS[curSec];
-  var secIdx = SECS.indexOf(curSec);
-
-  // pill
-  var labels = {les1:"Les 1 van 2",les2:"Les 2 van 2",oefening:"Oefening &mdash; AI of geen AI?",quiz:"Quiz &mdash; kennischeck",afronding:"Module afgerond"};
-  var cardPart = "";
-  if (curSec === "les1" || curSec === "les2") cardPart = " &nbsp;&middot;&nbsp; Card " + curCard + " van " + total;
-  else if (curSec === "oefening" && curCard <= 6) cardPart = " &nbsp;&middot;&nbsp; Voorbeeld " + curCard + " van 6";
-  else if (curSec === "quiz" && curCard <= 5) cardPart = " &nbsp;&middot;&nbsp; Vraag " + curCard + " van 5";
-  document.getElementById("pill").innerHTML = "Module 01 &nbsp;&middot;&nbsp; " + labels[curSec] + cardPart;
-
-  // dots
-  var dotCount = (curSec === "les1" || curSec === "les2") ? 6 : (curSec === "oefening" ? 6 : (curSec === "quiz" ? 5 : 1));
-  var dotCur = (curSec === "oefening" && curCard === 7) ? 7 : (curSec === "quiz" && curCard === 6) ? 6 : curCard;
-  var dc = document.getElementById("dots");
-  dc.innerHTML = "";
-  for (var i = 1; i <= dotCount; i++) {
-    var d = document.createElement("div");
-    d.className = "dot" + (i === dotCur ? " active" : i < dotCur ? " done" : "");
-    (function(n){ d.onclick = function(){ if(curSec==="les1"||curSec==="les2") jumpTo(curSec,n); }; })(i);
-    dc.appendChild(d);
+  function goTo(n) {
+    if (n < 1 || n > tot) return;
+    document.getElementById('card-' + cur).classList.remove('active');
+    cur = n;
+    document.getElementById('card-' + cur).classList.add('active');
+    document.getElementById('btn-prev').disabled = cur === 1;
+    document.getElementById('btn-next').textContent = cur === tot ? 'Naar volgende les \u2192' : 'Volgende \u2192';
+    document.getElementById('lesson-pill').innerHTML = 'Module 01 &nbsp;&middot;&nbsp; Les 2/6 &nbsp;&middot;&nbsp; Card ' + cur + ' van ' + tot;
+    document.getElementById('step-txt').textContent = cur + ' van ' + tot;
+    buildDots();
+    window.scrollTo(0, 0);
   }
 
-  // step text
-  var st = document.getElementById("step-txt");
-  if (curSec === "les1" || curSec === "les2") st.textContent = curCard + " van " + total;
-  else if (curSec === "oefening") st.textContent = curCard <= 6 ? curCard + " van 6" : "Resultaat";
-  else if (curSec === "quiz") st.textContent = curCard <= 5 ? curCard + " van 5" : "Resultaat";
-  else st.textContent = "";
+  function go(d) { goTo(cur + d); }
 
-  // prev button
-  document.getElementById("btn-prev").disabled = (curSec === "les1" && curCard === 1);
-
-  // next button text
-  var nb = document.getElementById("btn-next");
-  var isLast = curCard === total;
-  if (isLast && curSec === "les1") nb.textContent = "Naar les 2 →";
-  else if (isLast && curSec === "les2") nb.textContent = "Naar oefening →";
-  else if (isLast && curSec === "oefening") nb.textContent = "Naar quiz →";
-  else if (isLast && curSec === "quiz") nb.textContent = "Module afronden →";
-  else if (isLast && curSec === "afronding") nb.textContent = "Klaar! ✓";
-  else nb.textContent = "Volgende →";
-
-  // sidebar
-  var siMap = {les1:"si-les1",les2:"si-les2",oefening:"si-oefening",quiz:"si-quiz",afronding:"si-done"};
-  Object.keys(siMap).forEach(function(s) {
-    var el = document.getElementById(siMap[s]);
-    el.className = "sb-item" + (s === curSec ? " active" : "");
-  });
-}
-
-function answerOef(num, isAI, btn) {
-  if (oefAnswered[num]) return;
-  oefAnswered[num] = true;
-  var data = OEF_DATA[num];
-  var correct = (isAI === data.correct);
-  if (correct) oefScore++;
-  var rev = document.getElementById("oef-reveal-" + num);
-  rev.className = "game-reveal " + (correct ? "correct" : "wrong");
-  rev.innerHTML = (correct ? "<strong>&#10003; Correct!</strong> " : "<strong>&#10060; Niet helemaal.</strong> ") + data.fb;
-  rev.style.display = "block";
-  var btns = btn.parentNode.querySelectorAll(".game-btn");
-  btns.forEach(function(b){ b.disabled = true; b.style.opacity = ".5"; });
-  btn.style.opacity = "1";
-  btn.style.borderColor = correct ? "#3A8C5C" : "#B85050";
-  btn.style.background = correct ? "#EAF4EE" : "#FDF0F0";
-  if (num === 6) {
-    var scoreEl = document.getElementById("oef-score-num");
-    if (scoreEl) scoreEl.textContent = oefScore;
-    var titleEl = document.getElementById("oef-score-title");
-    var subEl = document.getElementById("oef-score-sub");
-    if (titleEl) titleEl.textContent = oefScore >= 5 ? "Uitstekend!" : oefScore >= 4 ? "Goed gedaan!" : "Aardig begin!";
-    if (subEl) subEl.textContent = "Je had " + oefScore + " van de 6 voorbeelden correct herkend.";
+  function selOpt(el, k) {
+    document.querySelectorAll('.r-opt').forEach(function(o){ o.classList.remove('sel'); });
+    el.classList.add('sel');
+    document.querySelectorAll('.r-fb').forEach(function(f){ f.style.display = 'none'; });
+    var fb = document.getElementById('rfb-' + k);
+    if (fb) fb.style.display = 'block';
   }
-}
 
-function answerQuiz(num, el, correct) {
-  if (quizAnswered[num]) return;
-  quizAnswered[num] = true;
-  if (correct) quizScore++;
-  var opts = document.getElementById("qopts-" + num).querySelectorAll(".ropt");
-  opts.forEach(function(o){ o.classList.add("disabled"); });
-  el.classList.add(correct ? "correct" : "wrong");
-  var rc = el.querySelector(".rc");
-  if (rc) rc.innerHTML = correct ? "&#10003;" : "&times;";
-  var fb = document.getElementById("qfb-" + num);
-  fb.className = "quiz-fb " + (correct ? "c" : "w");
-  fb.innerHTML = QUIZ_FB[num][correct ? "c" : "w"];
-  fb.style.display = "block";
-  if (num === 5) {
-    var sn = document.getElementById("quiz-score-num");
-    var st = document.getElementById("quiz-score-title");
-    var ss = document.getElementById("quiz-score-sub");
-    if (sn) sn.textContent = quizScore;
-    if (st) st.textContent = quizScore === 5 ? "Perfect!" : quizScore >= 4 ? "Uitstekend!" : quizScore >= 3 ? "Goed gedaan!" : "Goed begin!";
-    if (ss) ss.textContent = "Je had " + quizScore + " van de 5 vragen correct.";
-  }
-}
-
-function selRef(el, k) {
-  el.closest(".ropts").querySelectorAll(".ropt").forEach(function(o){ o.classList.remove("sel"); });
-  el.classList.add("sel");
-  document.querySelectorAll(".rfb").forEach(function(f){ f.style.display = "none"; });
-  var fb = document.getElementById("rf-" + k);
-  if (fb) fb.style.display = "block";
-}
-
-updateUI();
+  buildDots();
 </script>
 </body>
 </html>
